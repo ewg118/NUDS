@@ -1239,17 +1239,9 @@
 		</xs:simpleType>
 	</xs:attribute>
 
-	<xs:attributeGroup name="lang">
-		<xs:attribute ref="xml:lang" use="required"/>
-	</xs:attributeGroup>
-
 	<!--<xs:attributeGroup name="base">
 		<xs:attribute ref="xml:base" use="required"/>
 		</xs:attributeGroup>-->
-
-	<xs:attributeGroup name="id">
-		<xs:attribute ref="xml:id" use="required"/>
-	</xs:attributeGroup>
 
 	<xs:attributeGroup name="m.id">
 		<xs:attribute name="localType" type="xs:anyURI"/>
@@ -1257,7 +1249,7 @@
 	</xs:attributeGroup>
 	
 	<xs:attributeGroup name="a.scriptCode">
-		<xs:attribute name="scriptCode" use="required">
+		<xs:attribute name="scriptCode">
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
 					<xs:pattern value="[A-Z][a-z]{3}"/>
