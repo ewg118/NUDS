@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2013
+	VERSION: 2013b
 	
-	DATE: 20121217
+	DATE: 20130515
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -656,6 +656,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="a.scriptCode"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1253,6 +1254,16 @@
 	<xs:attributeGroup name="m.id">
 		<xs:attribute name="localType" type="xs:anyURI"/>
 		<xs:attribute name="certainty" type="xs:anyURI"/>
+	</xs:attributeGroup>
+	
+	<xs:attributeGroup name="a.scriptCode">
+		<xs:attribute name="scriptCode" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[A-Z][a-z]{3}"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:attributeGroup>
 	<!-- ********** END ATTRIBUTES ********** -->
 
