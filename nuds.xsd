@@ -187,7 +187,6 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element maxOccurs="unbounded" ref="title"/>
-				<xs:element minOccurs="0" maxOccurs="unbounded" ref="department"/>
 				<xs:element minOccurs="0" ref="categorySet"/>
 				<xs:element minOccurs="0" ref="descriptionSet"/>
 				<xs:element minOccurs="0" ref="subjectSet"/>
@@ -789,6 +788,7 @@
 			<xs:sequence>
 				<xs:choice minOccurs="1" maxOccurs="unbounded">
 					<xs:element ref="identifier"/>
+					<xs:element minOccurs="0" maxOccurs="unbounded" ref="department"/>
 					<xs:element ref="collection"/>
 					<xs:element ref="repository"/>
 					<xs:element ref="physloc"/>
