@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2013b
+	VERSION: 2013c
 	
-	DATE: 20130515
+	DATE: 20130911
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -14,6 +14,9 @@
 	
 	PURPOSE: The NUDS schema is an attempt to develop an all-encompassing data model for the 
 	transmission of numismatic data (both physical items and coin types).  This is a working draft.
+	
+	CHANGELOG: 
+	20130911: synchronizing aspects of EAD3 and EAC-CPF control into control, such as maintenanceHistory
 	
 	For more information about the elements, see http://wiki.numismatics.org/nuds:nuds
 
@@ -26,7 +29,7 @@
 	<xs:element name="nuds">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="nudsHeader"/>
+				<xs:element ref="control"/>
 				<xs:element ref="descMeta"/>
 				<xs:element minOccurs="0" ref="digRep"/>
 			</xs:sequence>
@@ -43,50 +46,194 @@
 		</xs:complexType>
 	</xs:element>
 
-	<!-- ********** NUDSHEADER ************ -->
-	<xs:element name="nudsHeader">
+	<!-- ********** control ************ -->
+	<xs:element name="control">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="nudsid"/>
+				<xs:element ref="recordId"/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherRecordId"/>
+				<xs:element ref="maintenanceStatus"/>
+				<xs:element ref="maintenanceAgency"/>
+				<xs:element ref="maintenanceHistory"/>
+				<xs:element minOccurs="0" ref="publicationStatus"/>
 				<xs:element ref="publicationStmt"/>
 				<xs:element ref="rightsStmt"/>
-				<xs:element minOccurs="0" ref="revisionStmt"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="nudsid">
+	<xs:element name="recordId">
 		<xs:complexType mixed="true">
 			<xs:simpleContent>
 				<xs:extension base="xs:anyURI">
-					<xs:attribute name="agencycode" type="xs:anyURI"/>
 					<xs:attribute ref="xml:id"/>
 					<xs:attributeGroup ref="m.id"/>
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
-
+	<xs:element name="otherRecordId">
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.id"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="maintenanceStatus">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:restriction base="xs:anyType">
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="revised"/>
+							<xs:enumeration value="deleted"/>
+							<xs:enumeration value="new"/>
+							<xs:enumeration value="deletedSplit"/>
+							<xs:enumeration value="deletedReplaced"/>
+							<xs:enumeration value="cancelled"/>
+							<xs:enumeration value="derived"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:attribute ref="xml:id"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="publicationStatus">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:restriction base="xs:anyType">
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="inProcess"/>
+							<xs:enumeration value="approved"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:attribute ref="xml:id"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="maintenanceAgency">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" ref="agencyCode"/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherAgencyCode"/>
+				<xs:element ref="agencyName"/>
+				<!--<xs:element minOccurs="0" ref="descriptiveNote"/>-->
+			</xs:sequence>
+			<xs:attribute ref="xml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="agencyCode">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="m.data.standardRepository">
+					<xs:attribute ref="xml:id"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="otherAgencyCode">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:NMTOKEN">
+					<xs:attribute ref="xml:id"/>
+					<xs:attributeGroup ref="a.localType"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="agencyName">
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="maintenanceHistory">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="maintenanceEvent"/>
+			</xs:sequence>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="maintenanceEvent">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="eventType"/>
+				<xs:element ref="eventDateTime"/>
+				<xs:element ref="agentType"/>
+				<xs:element ref="agent"/>
+				<xs:element minOccurs="0" ref="eventDescription"/>
+			</xs:sequence>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="eventType">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:restriction base="xs:anyType">
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="created"/>
+							<xs:enumeration value="revised"/>
+							<xs:enumeration value="deleted"/>
+							<xs:enumeration value="cancelled"/>
+							<xs:enumeration value="derived"/>
+							<xs:enumeration value="updated"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:attribute ref="xml:id"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="eventDateTime">
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attribute name="standardDateTime" type="m.data.standardDateTime"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="agentType">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:restriction base="xs:anyType">
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="human"/>
+							<xs:enumeration value="machine"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:attribute ref="xml:id"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="agent">
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="eventDescription">
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="publicationStmt">
 		<xs:complexType>
 			<xs:all>
-				<xs:element ref="createdBy"/>
 				<xs:element ref="publisher"/>
 				<xs:element minOccurs="0" ref="project"/>
-				<xs:element ref="date"/>
-				<xs:element ref="langUsage"/>
 			</xs:all>
 			<xs:attribute ref="xml:id"/>
 			<xs:attributeGroup ref="m.id"/>
 			<xs:attribute ref="xml:lang"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="createdBy">
-		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="publisher">
@@ -103,28 +250,6 @@
 			<xs:attributeGroup ref="m.id"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="langUsage">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element minOccurs="1" maxOccurs="unbounded" ref="language"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="language">
-		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="languageCode" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:pattern value="[a-z]{2}"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
-
 	<xs:element name="rightsStmt">
 		<xs:complexType>
 			<xs:all>
@@ -158,29 +283,9 @@
 			<xs:attributeGroup ref="m.id"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="revisionStmt">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="revision"/>
-			</xs:sequence>
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="revision">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="eventDateTime"/>
-				<xs:element ref="description"/>
-			</xs:sequence>
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
-		</xs:complexType>
-	</xs:element>
+	
 
-	<!-- *********** END NUDSHEADER ********** -->
+	<!-- *********** END control ********** -->
 
 	<!-- *********** DESCMETA ********** -->
 	<xs:element name="descMeta">
@@ -1223,16 +1328,9 @@
 			<xs:element ref="dateSet"/>
 		</xs:choice>
 	</xs:group>
-	<xs:element name="eventDateTime">
-		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="standardDateTime" type="m.data.standardDateTime"/>
-		</xs:complexType>
-	</xs:element>
 	<!-- ********** END DATES ********** -->
 
-	<!-- ********** ATTRIBUTES ********** -->
+	<!-- ********** ATTRIBUTES/DATA TYPES ********** -->
 	<xs:attribute name="certainty">
 		<xs:simpleType>
 			<xs:restriction base="xs:NMTOKEN"/>
@@ -1256,6 +1354,15 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<xs:simpleType name="m.data.standardRepository">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="(([A-Z]{2})|([a-zA-Z]{1})|([a-zA-Z]{3,4}))(-[a-zA-Z0-9:/\-]{1,11})"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attributeGroup name="a.localType">
+		<xs:attribute name="localType" type="xs:anyURI" use="required"/>
 	</xs:attributeGroup>
 	<!-- ********** END ATTRIBUTES ********** -->
 
