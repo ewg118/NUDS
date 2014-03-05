@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2013c
+	VERSION: 2014a
 	
-	DATE: 20130911
+	DATE: 20140305
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -17,6 +17,7 @@
 	
 	CHANGELOG: 
 	20130911: synchronizing aspects of EAD3 and EAC-CPF control into control, such as maintenanceHistory
+	20140305: formally added semanticDeclaration, removed categorySet (use localType on subjects), tweaked maintenanceStatus values, added noteSet/note, removed publicationStmt
 	
 	For more information about the elements, see http://wiki.numismatics.org/nuds:nuds
 
@@ -55,9 +56,9 @@
 				<xs:element ref="maintenanceStatus"/>
 				<xs:element ref="maintenanceAgency"/>
 				<xs:element ref="maintenanceHistory"/>
-				<xs:element minOccurs="0" ref="publicationStatus"/>
-				<xs:element ref="publicationStmt"/>
+				<xs:element ref="publicationStatus"/>				
 				<xs:element ref="rightsStmt"/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" ref="semanticDeclaration"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
@@ -68,15 +69,19 @@
 			<xs:simpleContent>
 				<xs:extension base="xs:anyURI">
 					<xs:attribute ref="xml:id"/>
-					<xs:attributeGroup ref="m.id"/>
+					<xs:attributeGroup ref="m.default"/>
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="otherRecordId">
 		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:simpleContent>
+				<xs:extension base="xs:anyURI">
+					<xs:attribute ref="xml:id"/>
+					<xs:attributeGroup ref="m.default"/>
+				</xs:extension>
+			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="maintenanceStatus">
@@ -85,13 +90,12 @@
 				<xs:restriction base="xs:anyType">
 					<xs:simpleType>
 						<xs:restriction base="xs:token">
-							<xs:enumeration value="revised"/>
-							<xs:enumeration value="deleted"/>
 							<xs:enumeration value="new"/>
-							<xs:enumeration value="deletedSplit"/>
-							<xs:enumeration value="deletedReplaced"/>
-							<xs:enumeration value="cancelled"/>
 							<xs:enumeration value="derived"/>
+							<xs:enumeration value="revised"/>
+							<xs:enumeration value="cancelled"/>
+							<xs:enumeration value="cancelledSplit"/>
+							<xs:enumeration value="cancelledReplaced"/>							
 						</xs:restriction>
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
@@ -114,13 +118,14 @@
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
+	
+	<!-- maintenanceAgency elements -->
 	<xs:element name="maintenanceAgency">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element minOccurs="0" ref="agencyCode"/>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherAgencyCode"/>
 				<xs:element ref="agencyName"/>
-				<!--<xs:element minOccurs="0" ref="descriptiveNote"/>-->
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 		</xs:complexType>
@@ -150,6 +155,8 @@
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
 	</xs:element>
+	
+	<!-- maintenanceHistory elements -->
 	<xs:element name="maintenanceHistory">
 		<xs:complexType>
 			<xs:sequence>
@@ -225,35 +232,12 @@
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="publicationStmt">
-		<xs:complexType>
-			<xs:all>
-				<xs:element ref="publisher"/>
-				<xs:element minOccurs="0" ref="project"/>
-			</xs:all>
-			<xs:attribute ref="xml:id"/>
-			<xs:attributeGroup ref="m.id"/>
-			<xs:attribute ref="xml:lang"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="publisher">
-		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="project">
-		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
-		</xs:complexType>
-	</xs:element>
+	
+	<!-- rightsStmt elements -->
 	<xs:element name="rightsStmt">
 		<xs:complexType>
 			<xs:all>
-				<xs:element ref="copyrightHolder"/>
+				<xs:element minOccurs="0" ref="copyrightHolder"/>
 				<xs:element minOccurs="0" ref="license"/>
 				<xs:element minOccurs="0" ref="preferCite"/>
 				<xs:element minOccurs="0" ref="date"/>
@@ -264,7 +248,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -272,7 +256,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -280,10 +264,38 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	
+	<!-- semanticDeclaration elements -->
+	<xs:element name="semanticDeclaration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="prefix"/>
+				<xs:element ref="namespace"/>				
+			</xs:sequence>
+			<xs:attribute ref="xml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="prefix">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:QName">
+					<xs:attribute ref="xml:id"/>
+				</xs:extension>				
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="namespace">
+		<xs:complexType mixed="true">
+			<xs:simpleContent>
+				<xs:extension base="xs:anyURI">
+					<xs:attribute ref="xml:id"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
 
 	<!-- *********** END control ********** -->
 
@@ -291,9 +303,9 @@
 	<xs:element name="descMeta">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="title"/>
-				<xs:element minOccurs="0" ref="categorySet"/>
+				<xs:element maxOccurs="unbounded" ref="title"/>				
 				<xs:element minOccurs="0" ref="descriptionSet"/>
+				<xs:element minOccurs="0" ref="noteSet"/>
 				<xs:element minOccurs="0" ref="subjectSet"/>
 				<xs:element ref="typeDesc"/>
 				<xs:element minOccurs="0" ref="physDesc"/>
@@ -311,17 +323,10 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:element name="categorySet">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="category"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+	
 	<xs:element name="descriptionSet">
 		<xs:complexType>
 			<xs:sequence>
@@ -336,18 +341,27 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="category">
+	<xs:element name="noteSet">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="note"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="note">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="subject">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -366,7 +380,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -375,7 +389,7 @@
 			<xs:attribute name="clock"/>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="chemicalAnalysis">
@@ -392,7 +406,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="components">
@@ -402,7 +416,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="component">
@@ -410,7 +424,7 @@
 			<xs:attribute name="percentage" use="required" type="xs:decimal"/>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="countermark">
@@ -421,7 +435,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="testmark">
@@ -432,7 +446,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -469,28 +483,28 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="shape"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="wear">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="completeness">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="grade">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="secondaryTreatment">
@@ -509,14 +523,14 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="era">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -541,7 +555,7 @@
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
-					<xs:attributeGroup ref="m.id"/>
+					<xs:attributeGroup ref="m.default"/>
 					<xs:attribute name="units"/>
 				</xs:restriction>
 			</xs:simpleContent>
@@ -556,7 +570,7 @@
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
-					<xs:attributeGroup ref="m.id"/>
+					<xs:attributeGroup ref="m.default"/>
 					<xs:attribute name="units"/>
 				</xs:restriction>
 			</xs:simpleContent>
@@ -571,7 +585,7 @@
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
-					<xs:attributeGroup ref="m.id"/>
+					<xs:attributeGroup ref="m.default"/>
 					<xs:attribute name="units"/>
 				</xs:restriction>
 			</xs:simpleContent>
@@ -586,7 +600,7 @@
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
-					<xs:attributeGroup ref="m.id"/>
+					<xs:attributeGroup ref="m.default"/>
 					<xs:attribute name="units"/>
 				</xs:restriction>
 			</xs:simpleContent>
@@ -601,7 +615,7 @@
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
-					<xs:attributeGroup ref="m.id"/>
+					<xs:attributeGroup ref="m.default"/>
 					<xs:attribute name="units"/>
 				</xs:restriction>
 			</xs:simpleContent>
@@ -618,7 +632,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<!-- ************* END PHYSDESC ************** -->
@@ -631,7 +645,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -759,7 +773,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="a.scriptCode"/>
 		</xs:complexType>
 	</xs:element>
@@ -768,7 +782,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -776,7 +790,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -802,7 +816,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -821,7 +835,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -833,7 +847,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	
@@ -847,7 +861,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	
@@ -861,7 +875,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	
@@ -869,7 +883,7 @@
 		<xs:complexType mixed="true">			
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	
@@ -882,7 +896,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -914,7 +928,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -922,7 +936,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -930,7 +944,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -938,7 +952,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -946,7 +960,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -954,7 +968,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -970,7 +984,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attribute name="onDisplay" use="required"/>
 		</xs:complexType>
 	</xs:element>
@@ -979,7 +993,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -987,7 +1001,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -995,7 +1009,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="appraisal">
@@ -1006,14 +1020,14 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="appraiser">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1034,14 +1048,14 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="acquiredFrom">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1056,7 +1070,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="chronlist">
@@ -1066,7 +1080,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="chronitem">
@@ -1080,7 +1094,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="previousColl">
@@ -1095,7 +1109,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1113,7 +1127,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1121,7 +1135,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1130,7 +1144,7 @@
 			<xs:attribute name="currency" use="required" type="xs:NCName"/>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1149,7 +1163,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1198,7 +1212,7 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.id"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -1341,9 +1355,10 @@
 		<xs:attribute ref="xml:base" use="required"/>
 		</xs:attributeGroup>-->
 
-	<xs:attributeGroup name="m.id">
+	<xs:attributeGroup name="m.default">
 		<xs:attribute name="localType" type="xs:anyURI"/>
 		<xs:attribute name="certainty" type="xs:anyURI"/>
+		<xs:attribute name="semantic" type="xs:anyURI"/>
 	</xs:attributeGroup>
 	
 	<xs:attributeGroup name="a.scriptCode">
