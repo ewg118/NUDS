@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2014a
+	VERSION: 2017a
 	
-	DATE: 20140305
+	DATE: 20161207
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -18,12 +18,14 @@
 	CHANGELOG: 
 	20130911: synchronizing aspects of EAD3 and EAC-CPF control into control, such as maintenanceHistory
 	20140305: formally added semanticDeclaration, removed categorySet (use localType on subjects), tweaked maintenanceStatus values, added noteSet/note, removed publicationStmt
+	20161207: Implemented SigiDoc modifications
 	
 	For more information about the elements, see http://wiki.numismatics.org/nuds:nuds
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- import default xml and xlink schemas -->
 	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd" id="xlink"/>
 	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2007/08/xml.xsd" id="xml"/>
 
@@ -125,7 +127,7 @@
 			<xs:sequence>
 				<xs:element minOccurs="0" ref="agencyCode"/>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherAgencyCode"/>
-				<xs:element ref="agencyName"/>
+				<xs:element ref="agencyName"></xs:element>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 		</xs:complexType>
@@ -149,6 +151,7 @@
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="agencyName">
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -202,7 +205,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="standardDateTime" type="m.data.standardDateTime"/>
+			<xs:attribute name="standardDateTime" type="m.data.standardDateTime" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="agentType">
@@ -771,10 +774,14 @@
 
 	<xs:element name="legend">
 		<xs:complexType mixed="true">
-			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attributeGroup ref="m.default"/>
-			<xs:attributeGroup ref="a.scriptCode"/>
+			<xs:complexContent mixed="true">
+				<xs:extension base="xs:anyType">
+					<xs:attribute ref="xml:id"/>
+					<xs:attribute ref="xml:lang"/>
+					<xs:attributeGroup ref="m.default"/>
+					<xs:attributeGroup ref="a.scriptCode"/>
+				</xs:extension>
+			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 
@@ -790,6 +797,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
+			<xs:attribute name="position"/>
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
