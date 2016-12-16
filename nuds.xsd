@@ -20,10 +20,10 @@
 	20140305: formally added semanticDeclaration, removed categorySet (use localType on subjects), tweaked maintenanceStatus values, added noteSet/note, removed publicationStmt
 	20161216: Implemented SigiDoc modifications
 	
-	For more information about the elements, see http://wiki.numismatics.org/nuds:nuds
+	For more information about the elements, see http://nomisma.org/nuds
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds"  xmlns="http://nomisma.org/nuds"
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
 	vc:minVersion="1.1">
 	<!-- import default xml and xlink schemas -->
@@ -173,7 +173,8 @@
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="maintenanceEvent">
+	
+	<xs:element name="maintenanceEvent">		
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="eventType"/>
