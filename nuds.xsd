@@ -6,7 +6,7 @@
 	
 	VERSION: 2017a
 	
-	DATE: 20161207
+	DATE: 20161216
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -18,7 +18,7 @@
 	CHANGELOG: 
 	20130911: synchronizing aspects of EAD3 and EAC-CPF control into control, such as maintenanceHistory
 	20140305: formally added semanticDeclaration, removed categorySet (use localType on subjects), tweaked maintenanceStatus values, added noteSet/note, removed publicationStmt
-	20161207: Implemented SigiDoc modifications
+	20161216: Implemented SigiDoc modifications
 	
 	For more information about the elements, see http://wiki.numismatics.org/nuds:nuds
 
@@ -150,7 +150,7 @@
 			<xs:simpleContent>
 				<xs:extension base="xs:NMTOKEN">
 					<xs:attribute ref="xml:id"/>
-					<xs:attributeGroup ref="a.localType"/>
+					<xs:attributeGroup ref="nuds_a.localType"/>
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -377,6 +377,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element minOccurs="0" maxOccurs="1" ref="axis"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="channelOrientation"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="chemicalAnalysis"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="conservationState"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="countermark"/>
@@ -392,6 +393,14 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="axis">
+		<xs:complexType mixed="true">
+			<xs:attribute name="clock"/>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="channelOrientation">
 		<xs:complexType mixed="true">
 			<xs:attribute name="clock"/>
 			<xs:attribute ref="xml:id"/>
@@ -563,7 +572,7 @@
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
 					<xs:attributeGroup ref="m.default"/>
-					<xs:attribute name="units"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
 				</xs:restriction>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -578,7 +587,7 @@
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
 					<xs:attributeGroup ref="m.default"/>
-					<xs:attribute name="units"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
 				</xs:restriction>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -593,7 +602,7 @@
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
 					<xs:attributeGroup ref="m.default"/>
-					<xs:attribute name="units"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
 				</xs:restriction>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -608,7 +617,7 @@
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
 					<xs:attributeGroup ref="m.default"/>
-					<xs:attribute name="units"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
 				</xs:restriction>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -623,16 +632,11 @@
 					<xs:attribute ref="xml:id"/>
 					<xs:attribute ref="xml:lang"/>
 					<xs:attributeGroup ref="m.default"/>
-					<xs:attribute name="units"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
 				</xs:restriction>
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
-	<xs:attribute name="units">
-		<xs:simpleType>
-			<xs:restriction base="xs:NMTOKEN"/>
-		</xs:simpleType>
-	</xs:attribute>
 	<!-- end measurements -->
 
 	<xs:element name="shape">
@@ -680,22 +684,26 @@
 
 	<xs:element name="objectType">
 		<xs:complexType mixed="true">
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="denomination">
 		<xs:complexType mixed="true">
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="manufacture">
 		<xs:complexType mixed="true">
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="material">
 		<xs:complexType mixed="true">
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -704,23 +712,27 @@
 	<xs:element name="persname">
 		<xs:complexType mixed="true">
 			<xs:attribute name="title"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="geogname">
 		<xs:complexType mixed="true">
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="corpname">
 		<xs:complexType mixed="true">
 			<xs:attribute name="title"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="famname">
 		<xs:complexType mixed="true">
 			<xs:attribute name="title"/>
+			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
@@ -757,6 +769,10 @@
 
 	<xs:group name="m.sideCharacteristics">
 		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="date"/>
+				<xs:element ref="dateRange"/>
+			</xs:choice>
 			<xs:element minOccurs="0" ref="description"/>
 			<xs:element minOccurs="0" ref="legend"/>
 			<xs:element minOccurs="0" ref="type"/>
@@ -784,7 +800,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
-			<xs:attributeGroup ref="a.scriptCode"/>			
+			<xs:attributeGroup ref="nuds_a.scriptCode"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1167,7 +1183,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="localType" type="xs:anyURI"/>
+			<xs:attribute name="localType"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1232,11 +1248,20 @@
 	</xs:element>
 
 	<xs:element name="reference">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="title"/>
-				<xs:element minOccurs="0" ref="identifier"/>
-			</xs:sequence>
+		<xs:annotation>
+			<xs:documentation>(bibliographic citation) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:group ref="tei:tei_model.gLike"/>
+				<xs:group ref="tei:tei_model.highlighted"/>
+				<xs:group ref="tei:tei_model.pPart.data"/>
+				<xs:group ref="tei:tei_model.pPart.edit"/>
+				<xs:group ref="tei:tei_model.segLike"/>
+				<xs:group ref="tei:tei_model.ptrLike"/>
+				<xs:group ref="tei:tei_model.biblPart"/>
+				<xs:group ref="tei:tei_model.global"/>
+			</xs:choice>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
@@ -1307,7 +1332,8 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="localType" type="xs:anyURI"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>
 			<xs:attributeGroup ref="m.dateSingle"/>
 		</xs:complexType>
 	</xs:element>
@@ -1326,7 +1352,8 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="localType" type="xs:anyURI"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>			
 		</xs:complexType>
 	</xs:element>
 
@@ -1334,6 +1361,7 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>
 			<xs:attributeGroup ref="m.dateSingle"/>
 		</xs:complexType>
 	</xs:element>
@@ -1342,9 +1370,11 @@
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>
 			<xs:attributeGroup ref="m.dateSingle"/>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="dateSet">
 		<xs:complexType>
 			<xs:sequence>
@@ -1359,7 +1389,8 @@
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="localType" type="xs:anyURI"/>
+			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>
+			<xs:attribute name="localType"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:group name="m.dates">
@@ -1372,23 +1403,102 @@
 	<!-- ********** END DATES ********** -->
 
 	<!-- ********** ATTRIBUTES/DATA TYPES ********** -->
-	<xs:attribute name="certainty">
-		<xs:simpleType>
-			<xs:restriction base="xs:NMTOKEN"/>
-		</xs:simpleType>
-	</xs:attribute>
-
-	<!--<xs:attributeGroup name="base">
-		<xs:attribute ref="xml:base" use="required"/>
-		</xs:attributeGroup>-->
-
-	<xs:attributeGroup name="m.default">
-		<xs:attribute name="localType" type="xs:anyURI"/>
-		<xs:attribute name="certainty" type="xs:anyURI"/>
-		<xs:attribute name="semantic" type="xs:anyURI"/>
+	<xs:attributeGroup name="nuds_a.dimensions.attributes">
+		<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>
+		<xs:attributeGroup ref="nuds_a.dimensions.attribute.unit"/>
 	</xs:attributeGroup>
 
-	<xs:attributeGroup name="a.scriptCode">
+	<xs:attributeGroup name="nuds_a.dimensions.attribute.precision">
+		<xs:attribute name="precision">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="low"/>
+					<xs:enumeration value="medium"/>
+					<xs:enumeration value="high"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="nuds_a.dimensions.attribute.unit">
+		<xs:attribute name="units">
+			<xs:annotation>
+				<xs:documentation>names the unit used for the measurement. Suggested values include: 1] g; 2] cm; 3] mm</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:union>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="g"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="cm"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="mm"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:pattern value="(\p{L}|\p{N}|\p{P}|\p{S})+"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:union>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="m.default">
+		<xs:attributeGroup ref="nuds_a.localType"/>
+		<xs:attribute name="resp">
+			<xs:annotation>
+				<xs:documentation>(responsible party) indicates the agency responsible for the intervention or interpretation, for example an editor or transcriber.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction>
+					<xs:simpleType>
+						<xs:list itemType="xs:anyURI"/>
+					</xs:simpleType>
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="certainty">
+			<xs:annotation>
+				<xs:documentation>designates the level of certainty regarding a statement. Recommended values are tokens or URIs connected to uncertainty types defined by Nomisma.org.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction>
+					<xs:simpleType>
+						<xs:list itemType="xs:anyURI"/>
+					</xs:simpleType>
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="semantic">
+			<xs:annotation>
+				<xs:documentation>an RDF property (e.g., nuds:reference[@semantic='nmo:hasTypeSeriesItem']) to lend greater semantic meaning or differentiation. The prefix of this property should be defined by semanticDeclaration, in the NUDS control.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction>
+					<xs:simpleType>
+						<xs:list itemType="xs:anyURI"/>
+					</xs:simpleType>
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="nuds_a.scriptCode">
+		<xs:annotation>
+			<xs:documentation>four letter script code conforming to ISO 15924 (e.g., Latn = Latin).</xs:documentation>
+		</xs:annotation>
 		<xs:attribute name="scriptCode">
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
@@ -1399,12 +1509,20 @@
 	</xs:attributeGroup>
 
 	<xs:simpleType name="m.data.standardRepository">
+		<xs:annotation>
+			<xs:documentation>repository code which could conform to the MARC Code List for Organizations standard (http://www.loc.gov/marc/organizations/).</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:token">
 			<xs:pattern value="(([A-Z]{2})|([a-zA-Z]{1})|([a-zA-Z]{3,4}))(-[a-zA-Z0-9:/\-]{1,11})"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:attributeGroup name="a.localType">
-		<xs:attribute name="localType" type="xs:anyURI" use="required"/>
+
+	<xs:attributeGroup name="nuds_a.localType">		
+		<xs:attribute name="localType" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>generic type attribute used to differentiate the meaning of the same element within a NUDS document.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:attributeGroup>
 	<!-- ********** END ATTRIBUTES ********** -->
 
