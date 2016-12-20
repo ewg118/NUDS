@@ -23,7 +23,7 @@
 	For more information about the elements, see http://nomisma.org/nuds
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds"  xmlns="http://nomisma.org/nuds"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
 	vc:minVersion="1.1">
 	<!-- import default xml and xlink schemas -->
@@ -173,8 +173,8 @@
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
 	</xs:element>
-	
-	<xs:element name="maintenanceEvent">		
+
+	<xs:element name="maintenanceEvent">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="eventType"/>
@@ -296,7 +296,7 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="namespace">
-		<xs:complexType mixed="true">
+		<xs:complexType>
 			<xs:simpleContent>
 				<xs:extension base="xs:anyURI">
 					<xs:attribute ref="xml:id"/>
@@ -501,6 +501,7 @@
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="shape"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="wear">
@@ -508,6 +509,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="completeness">
@@ -515,6 +517,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="grade">
@@ -524,8 +527,14 @@
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
+
 	<xs:element name="secondaryTreatment">
-		<xs:complexType/>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
 	</xs:element>
 	<!-- end conservationState elements -->
 
@@ -548,6 +557,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -645,6 +655,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 	<!-- ************* END PHYSDESC ************** -->
@@ -757,13 +768,10 @@
 	</xs:element>
 
 	<xs:element name="edge">
-		<xs:complexType>
-			<xs:choice>
+		<xs:complexType mixed="false">
+			<xs:choice minOccurs="1">
 				<xs:element ref="description"/>
-				<xs:choice minOccurs="1">
-					<xs:element minOccurs="0" ref="type"/>
-					<xs:element minOccurs="0" ref="legend"/>
-				</xs:choice>
+				<xs:group ref="m.typeLegend"/>
 			</xs:choice>
 		</xs:complexType>
 	</xs:element>
@@ -771,12 +779,13 @@
 	<xs:group name="m.sideCharacteristics">
 		<xs:sequence>
 			<xs:choice>
-				<xs:element ref="date"/>
-				<xs:element ref="dateRange"/>
+				<xs:element minOccurs="0" ref="date"/>
+				<xs:element minOccurs="0" ref="dateRange"/>
 			</xs:choice>
-			<xs:element minOccurs="0" ref="description"/>
-			<xs:element minOccurs="0" ref="legend"/>
-			<xs:element minOccurs="0" ref="type"/>
+			<xs:choice minOccurs="1">
+				<xs:element ref="description"/>
+				<xs:group ref="m.typeLegend"/>
+			</xs:choice>
 			<xs:element minOccurs="0" ref="typeSeries"/>
 			<xs:element minOccurs="0" ref="symbol"/>
 			<xs:element minOccurs="0" ref="die"/>
@@ -785,10 +794,17 @@
 		</xs:sequence>
 	</xs:group>
 
+	<xs:group name="m.typeLegend">
+		<xs:sequence>
+			<xs:element minOccurs="0" ref="legend"/>
+			<xs:element minOccurs="0" ref="type"/>
+		</xs:sequence>
+	</xs:group>
+
 	<xs:element name="type">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="description"/>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="description"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -810,6 +826,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -819,6 +836,7 @@
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="position"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -826,12 +844,16 @@
 		<xs:complexType mixed="true">
 			<xs:attribute name="state" use="required"/>
 			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="weightStandard">
 		<xs:complexType mixed="true">
-			<xs:attribute name="origin" use="required"/>
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -854,8 +876,9 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:annotation>
-					<xs:documentation>The aim here is that the findspotDesc may contain anything in the NUDS-Hoard hoardDesc: typically a
-						findspot/geogname.</xs:documentation>
+					<xs:documentation>Findspot Description. The findspotDesc may contain anything in the NUDS-Hoard hoardDesc: typically a findspot/geogname.
+						This element may use XLink attributes to point directly to a record with more information about the findspot, e.g., a URI defining a
+						coin hoard.</xs:documentation>
 				</xs:annotation>
 				<xs:element minOccurs="0" ref="findspot"/>
 				<xs:element minOccurs="0" ref="deposit"/>
@@ -1157,6 +1180,7 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1220,10 +1244,7 @@
 						<xs:group ref="m.conservationStates"/>
 					</xs:choice>
 					<xs:choice>
-						<!--<xs:element ref="reference"/>-->
-						<xs:sequence>
-							<xs:group ref="m.sideCharacteristics"/>
-						</xs:sequence>
+						<xs:group ref="m.sideCharacteristics"/>
 					</xs:choice>
 				</xs:choice>
 			</xs:sequence>
@@ -1239,9 +1260,7 @@
 						<xs:group ref="m.conservationStates"/>
 					</xs:choice>
 					<xs:choice>
-						<xs:sequence>
-							<xs:group ref="m.sideCharacteristics"/>
-						</xs:sequence>
+						<xs:group ref="m.sideCharacteristics"/>
 					</xs:choice>
 				</xs:choice>
 			</xs:sequence>
@@ -1250,7 +1269,8 @@
 
 	<xs:element name="reference">
 		<xs:annotation>
-			<xs:documentation>(bibliographic citation) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
+			<xs:documentation>(bibliographic citation) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or may
+				not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -1348,13 +1368,13 @@
 	<xs:element name="dateRange">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element minOccurs="0" ref="fromDate"/>
-				<xs:element minOccurs="0" ref="toDate"/>
+				<xs:element ref="fromDate"/>
+				<xs:element ref="toDate"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
-			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>			
+			<xs:attributeGroup ref="nuds_a.dimensions.attribute.precision"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -1375,7 +1395,7 @@
 			<xs:attributeGroup ref="m.dateSingle"/>
 		</xs:complexType>
 	</xs:element>
-	
+
 	<xs:element name="dateSet">
 		<xs:complexType>
 			<xs:sequence>
@@ -1457,7 +1477,8 @@
 		<xs:attributeGroup ref="nuds_a.localType"/>
 		<xs:attribute name="resp">
 			<xs:annotation>
-				<xs:documentation>(responsible party) indicates the agency responsible for the intervention or interpretation, for example an editor or transcriber.</xs:documentation>
+				<xs:documentation>(responsible party) indicates the agency responsible for the intervention or interpretation, for example an editor or
+					transcriber.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction>
@@ -1470,7 +1491,8 @@
 		</xs:attribute>
 		<xs:attribute name="certainty">
 			<xs:annotation>
-				<xs:documentation>designates the level of certainty regarding a statement. Recommended values are tokens or URIs connected to uncertainty types defined by Nomisma.org.</xs:documentation>
+				<xs:documentation>designates the level of certainty regarding a statement. Recommended values are tokens or URIs connected to uncertainty types
+					defined by Nomisma.org.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction>
@@ -1483,7 +1505,8 @@
 		</xs:attribute>
 		<xs:attribute name="semantic">
 			<xs:annotation>
-				<xs:documentation>an RDF property (e.g., nuds:reference[@semantic='nmo:hasTypeSeriesItem']) to lend greater semantic meaning or differentiation. The prefix of this property should be defined by semanticDeclaration, in the NUDS control.</xs:documentation>
+				<xs:documentation>an RDF property (e.g., nuds:reference[@semantic='nmo:hasTypeSeriesItem']) to lend greater semantic meaning or differentiation.
+					The prefix of this property should be defined by semanticDeclaration, in the NUDS control.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction>
@@ -1511,14 +1534,15 @@
 
 	<xs:simpleType name="m.data.standardRepository">
 		<xs:annotation>
-			<xs:documentation>repository code which could conform to the MARC Code List for Organizations standard (http://www.loc.gov/marc/organizations/).</xs:documentation>
+			<xs:documentation>repository code which could conform to the MARC Code List for Organizations standard
+				(http://www.loc.gov/marc/organizations/).</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:token">
 			<xs:pattern value="(([A-Z]{2})|([a-zA-Z]{1})|([a-zA-Z]{3,4}))(-[a-zA-Z0-9:/\-]{1,11})"/>
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:attributeGroup name="nuds_a.localType">		
+	<xs:attributeGroup name="nuds_a.localType">
 		<xs:attribute name="localType" type="xs:anyURI">
 			<xs:annotation>
 				<xs:documentation>generic type attribute used to differentiate the meaning of the same element within a NUDS document.</xs:documentation>
