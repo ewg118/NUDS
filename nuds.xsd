@@ -266,6 +266,7 @@
 							<xs:enumeration value="revised"/>
 							<xs:enumeration value="deleted"/>
 							<xs:enumeration value="cancelled"/>
+							<xs:enumeration value="cancelledSplit"/>
 							<xs:enumeration value="derived"/>
 							<xs:enumeration value="updated"/>
 						</xs:restriction>
