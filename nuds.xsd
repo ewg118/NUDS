@@ -1537,14 +1537,14 @@
 	<!-- previous collections -->
 	<xs:element name="provenance">
 		<xs:annotation>
-			<xs:documentation>Provenance: a container element for either a textual &lt;description&gt; of provenance or a &lt;chronlist&gt; listing the dates
+			<xs:documentation>Provenance: a container element for either a textual &lt;description&gt; of provenance or a &lt;chronList&gt; listing the dates
 				and previous owners of the object.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
 				<xs:choice>
 					<xs:element ref="description"/>
-					<xs:element ref="chronlist"/>
+					<xs:element ref="chronList"/>
 				</xs:choice>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
@@ -1553,13 +1553,13 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="chronlist">
+	<xs:element name="chronList">
 		<xs:annotation>
-			<xs:documentation>Chronological List of ownership events. Includes 1 or more &lt;chronitem&gt; elements.</xs:documentation>
+			<xs:documentation>Chronological List of ownership events. Includes 1 or more &lt;chronItem&gt; elements.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element minOccurs="1" maxOccurs="unbounded" ref="chronitem"/>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="chronItem"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
@@ -1567,7 +1567,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="chronitem">
+	<xs:element name="chronItem">
 		<xs:annotation>
 			<xs:documentation>Chronological Item: an individual ownership event within a chain of an object's provenance. It must include a date or date range
 				and the previous collection.</xs:documentation>
