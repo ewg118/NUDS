@@ -71,16 +71,16 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:all>
-				<xs:element ref="recordId"/>
+			<xs:sequence>
+				<xs:element ref="recordId" minOccurs="1" maxOccurs="1"/>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherRecordId"/>
+				<xs:element ref="publicationStatus"/>
 				<xs:element ref="maintenanceStatus"/>
 				<xs:element ref="maintenanceAgency"/>
-				<xs:element ref="maintenanceHistory"/>
-				<xs:element ref="publicationStatus"/>
+				<xs:element ref="maintenanceHistory"/>				
 				<xs:element ref="rightsStmt"/>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="semanticDeclaration"/>
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
@@ -171,11 +171,11 @@
 				well to unambiguously identify the institution or service.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
+				<xs:element ref="agencyName"/>
 				<xs:element minOccurs="0" ref="agencyCode"/>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherAgencyCode"/>
-				<xs:element ref="agencyName"/>
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 		</xs:complexType>
 	</xs:element>
@@ -439,7 +439,7 @@
 				metadata containers for an object or typology. &lt;typeDesc&gt; is the only required child element.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
 				<xs:element maxOccurs="unbounded" ref="title"/>
 				<xs:element minOccurs="0" ref="descriptionSet"/>
 				<xs:element minOccurs="0" ref="noteSet"/>
@@ -450,7 +450,7 @@
 				<xs:element minOccurs="0" ref="findspotDesc"/>
 				<xs:element minOccurs="0" ref="refDesc"/>
 				<xs:element minOccurs="0" ref="adminDesc"/>
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
@@ -533,7 +533,7 @@
 				be used for typological records.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
 				<xs:element minOccurs="0" maxOccurs="1" ref="axis"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="channelOrientation"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="chemicalAnalysis"/>
@@ -543,7 +543,7 @@
 				<xs:element minOccurs="0" maxOccurs="1" ref="measurementsSet"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="testmark"/>
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
