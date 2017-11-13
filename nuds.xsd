@@ -682,13 +682,13 @@
 	</xs:element>
 
 	<xs:group name="m.conservationStates">
-		<xs:all>
+		<xs:sequence>
 			<xs:element minOccurs="0" ref="condition"/>
 			<xs:element minOccurs="0" ref="wear"/>
 			<xs:element minOccurs="0" ref="completeness"/>
 			<xs:element minOccurs="0" ref="grade"/>
 			<xs:element minOccurs="0" ref="secondaryTreatment"/>
-		</xs:all>
+		</xs:sequence>
 	</xs:group>
 
 	<xs:element name="condition">
