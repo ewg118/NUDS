@@ -938,6 +938,7 @@
 			<xs:element minOccurs="0" ref="reverse"/>
 			<xs:element minOccurs="0" ref="edge"/>
 			<xs:element minOccurs="0" ref="weightStandard"/>
+			<xs:element minOccurs="0" ref="typeSeries"/>
 		</xs:sequence>
 	</xs:group>
 
