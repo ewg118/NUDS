@@ -1075,10 +1075,10 @@
 				<xs:element ref="description"/>
 				<xs:group ref="m.typeLegend"/>
 			</xs:choice>
-			<xs:element minOccurs="0" ref="typeSeries"/>
-			<xs:element minOccurs="0" ref="symbol"/>
 			<xs:element minOccurs="0" ref="die"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" ref="symbol"/>
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="persname"/>
+			<xs:element minOccurs="0" ref="typeSeries"/>
 			<xs:element minOccurs="0" ref="reference"/>
 		</xs:sequence>
 	</xs:group>
@@ -1086,7 +1086,7 @@
 	<xs:group name="m.typeLegend">
 		<xs:sequence>
 			<xs:element minOccurs="0" ref="legend"/>
-			<xs:element minOccurs="0" ref="type"/>
+			<xs:element minOccurs="0" ref="type"/>						
 		</xs:sequence>
 	</xs:group>
 
