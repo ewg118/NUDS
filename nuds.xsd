@@ -19,7 +19,7 @@
 	20130911: synchronizing aspects of EAD3 and EAC-CPF control into control, such as maintenanceHistory
 	20140305: formally added semanticDeclaration, removed categorySet (use localType on subjects), tweaked maintenanceStatus values, added noteSet/note, removed publicationStmt
 	20161216: Implemented SigiDoc modifications
-	
+	20171214: Introduced "deprecatedType" publicationStatus for better control of type concordance RDF export and a variety of other minor fixes with multiple symbols or minor re-ordering
 	For more information about the elements, see http://nomisma.org/nuds
 
 -->
@@ -77,7 +77,7 @@
 				<xs:element ref="publicationStatus"/>
 				<xs:element ref="maintenanceStatus"/>
 				<xs:element ref="maintenanceAgency"/>
-				<xs:element ref="maintenanceHistory"/>				
+				<xs:element ref="maintenanceHistory"/>
 				<xs:element ref="rightsStmt"/>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="semanticDeclaration"/>
 			</xs:sequence>
@@ -145,7 +145,11 @@
 		<xs:annotation>
 			<xs:documentation>The current publication status of the NUDS record may be specified in the &lt;publicationStatus&gt; element. If according to local
 				practice the instance is still in the process of being approved for publication, the value should be "inProcess," while if approved for
-				publication, the value should be "approved."</xs:documentation>
+				publication, the value should be "approved." With respect to Numishare integration, "approved" means that the record will be designated for both
+				RDF export and general Solr indexing for the browse interface. "approvedSubtype" records are made available in RDF and indexed into Solr and are
+				available in the Atom feed search handler for API requests, but are not visible in the general browse interface. "deprecatedType" coin type
+				records should not be indexed into Solr, but ought to exist in RDF exports for expression networks of type concordances, even if they are not to
+				be used as current accepted type references.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -155,6 +159,7 @@
 							<xs:enumeration value="inProcess"/>
 							<xs:enumeration value="approved"/>
 							<xs:enumeration value="approvedSubtype"/>
+							<xs:enumeration value="deprecatedType"/>
 						</xs:restriction>
 					</xs:simpleType>
 					<xs:attribute ref="xml:id"/>
@@ -1086,7 +1091,7 @@
 	<xs:group name="m.typeLegend">
 		<xs:sequence>
 			<xs:element minOccurs="0" ref="legend"/>
-			<xs:element minOccurs="0" ref="type"/>						
+			<xs:element minOccurs="0" ref="type"/>
 		</xs:sequence>
 	</xs:group>
 
