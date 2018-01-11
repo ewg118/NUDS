@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2017a
+	VERSION: 2018a
 	
-	DATE: 20161216
+	DATE: 20180111
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -19,8 +19,10 @@
 	20130911: synchronizing aspects of EAD3 and EAC-CPF control into control, such as maintenanceHistory
 	20140305: formally added semanticDeclaration, removed categorySet (use localType on subjects), tweaked maintenanceStatus values, added noteSet/note, removed publicationStmt
 	20161216: Implemented SigiDoc modifications
-	20171214: Introduced "deprecatedType" publicationStatus for better control of type concordance RDF export and a variety of other minor fixes with multiple symbols or minor re-ordering
-	For more information about the elements, see http://nomisma.org/nuds
+	20171214: Introduced "deprecatedType" publicationStatus for better control of type concordance RDF export and a 
+		variety of other minor fixes with multiple symbols or minor re-ordering. For more information about the elements, see http://nomisma.org/nuds
+	20180111: Added more elements into physDesc that are used in the ANS collection. Relaxed date requirement for ChronItem. 
+		Added @for to license to allow more than one for associatiation with data rights and image rights
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
@@ -340,8 +342,8 @@
 		<xs:complexType>
 			<xs:all>
 				<xs:element minOccurs="0" ref="copyrightHolder"/>
-				<xs:element minOccurs="0" ref="license"/>
-				<xs:element minOccurs="0" ref="rights"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="license"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="rights"/>
 				<xs:element minOccurs="0" ref="preferCite"/>
 				<xs:element minOccurs="0" ref="date"/>
 			</xs:all>
@@ -361,12 +363,24 @@
 	</xs:element>
 	<xs:element name="license">
 		<xs:annotation>
-			<xs:documentation>A statement of the metadata license. It is recommended to link to a license provided by Creative Commons or the Open Data
-				Commons.</xs:documentation>
+			<xs:documentation>A statement of the metadata license. It is recommended to link to a license provided by Creative Commons for images or other
+				digital facsimiles or the Open Data Commons for the metadata.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
+			<xs:attribute name="for">
+				<xs:annotation>
+					<xs:documentation>A restricted list to associate the license statement to the particular type of resource for which the license has been
+						granted (data, images).</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="data"/>
+						<xs:enumeration value="images"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
@@ -539,16 +553,32 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" ref="authenticity"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="axis"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="channelOrientation"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="chemicalAnalysis"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="color"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="conservationState"/>
-				<xs:element minOccurs="0" maxOccurs="unbounded" ref="countermark"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="countermark"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="dateOnObject"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="measurementsSet"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="serialNumber"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>
-				<xs:element minOccurs="0" maxOccurs="unbounded" ref="testmark"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="testmark"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="watermark"/>
 			</xs:sequence>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="authenticity">
+		<xs:annotation>
+			<xs:documentation>Authenticity of the object (e.g., counterfeit, imitation). Recommended to link to a controlled list via XLink
+				attributes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
@@ -629,7 +659,18 @@
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
-
+	<xs:element name="color">
+		<xs:annotation>
+			<xs:documentation>Free text description of color(s) of object. Typically applied to paper monetary instruments, tokens, or decorations. XLink
+				attributes may be applied to link to controlled vocabularies of color.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="countermark">
 		<xs:annotation>
 			<xs:documentation>A &lt;countermark&gt; is a physical characteristic, separated from typological description. It may optionally contain
@@ -637,10 +678,13 @@
 				&lt;countermark&gt; when the side of the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element minOccurs="0" ref="obverse"/>
-				<xs:element minOccurs="0" ref="reverse"/>
-			</xs:sequence>
+			<xs:choice>
+				<xs:element ref="symbol" maxOccurs="unbounded"/>
+				<xs:sequence>
+					<xs:element minOccurs="0" ref="obverse"/>
+					<xs:element minOccurs="0" ref="reverse"/>
+				</xs:sequence>
+			</xs:choice>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
@@ -654,10 +698,33 @@
 				of the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element minOccurs="0" ref="obverse"/>
-				<xs:element minOccurs="0" ref="reverse"/>
-			</xs:sequence>
+			<xs:choice>
+				<xs:element ref="symbol" maxOccurs="unbounded"/>
+				<xs:sequence>
+					<xs:element minOccurs="0" ref="obverse"/>
+					<xs:element minOccurs="0" ref="reverse"/>
+				</xs:sequence>
+			</xs:choice>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="watermark">
+		<xs:annotation>
+			<xs:documentation>A &lt;watermark&gt; is a physical characteristic (particularly on paper objects), separated from typological description. It may
+				optionally contain &lt;obverse&gt; or &lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt; element, which may be included directly
+				within &lt;watermark&gt; when the side of the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:choice>
+				<xs:element ref="symbol" maxOccurs="unbounded"/>
+				<xs:sequence>
+					<xs:element minOccurs="0" ref="obverse"/>
+					<xs:element minOccurs="0" ref="reverse"/>
+				</xs:sequence>
+			</xs:choice>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
@@ -895,6 +962,18 @@
 	</xs:element>
 	<!-- end measurements -->
 
+	<xs:element name="serialNumber">
+		<xs:annotation>
+			<xs:documentation>The serial number that appears on an object. The element is repeatable and most commonly applies to paper
+				objects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="shape">
 		<xs:annotation>
 			<xs:documentation>The &lt;shape&gt; of an object. Ideally, it should conform to a controlled vocabulary.</xs:documentation>
@@ -927,9 +1006,9 @@
 
 	<xs:group name="m.typeElements">
 		<xs:sequence>
-			<!-- only objectType is required -->
+			<!-- objectType is no longer required to allow for empty elements and a coin type URI -->
 			<!-- only material may be repeated -->
-			<xs:element minOccurs="1" ref="objectType"/>
+			<xs:element minOccurs="0" ref="objectType"/>
 			<xs:choice>
 				<xs:element minOccurs="0" ref="date"/>
 				<xs:element minOccurs="0" ref="dateRange"/>
@@ -1303,7 +1382,8 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="reference"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="reference"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="citation"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
@@ -1576,12 +1656,12 @@
 
 	<xs:element name="chronItem">
 		<xs:annotation>
-			<xs:documentation>Chronological Item: an individual ownership event within a chain of an object's provenance. It must include a date or date range
-				and the previous collection.</xs:documentation>
+			<xs:documentation>Chronological Item: an individual ownership event within a chain of an object's provenance. The date is optional (since the date
+				is not always adequately preserved in the electronic records) but highly recommended.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:choice>
+				<xs:choice minOccurs="0">
 					<xs:element ref="date"/>
 					<xs:element ref="dateRange"/>
 				</xs:choice>
@@ -1771,7 +1851,30 @@
 
 	<xs:element name="reference">
 		<xs:annotation>
-			<xs:documentation>A bibliographic reference contains a loosely-structured bibliographic or electronic citation of which the sub-components may or
+			<xs:documentation>A bibliographic reference (by which a coin is identified in a type corpus) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or
+				may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:group ref="tei:tei_model.gLike"/>
+				<xs:group ref="tei:tei_model.highlighted"/>
+				<xs:group ref="tei:tei_model.pPart.data"/>
+				<xs:group ref="tei:tei_model.pPart.edit"/>
+				<xs:group ref="tei:tei_model.segLike"/>
+				<xs:group ref="tei:tei_model.ptrLike"/>
+				<xs:group ref="tei:tei_model.biblPart"/>
+				<xs:group ref="tei:tei_model.global"/>
+			</xs:choice>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="citation">
+		<xs:annotation>
+			<xs:documentation>A bibliographic citation (explicit reference of the physical object detailed in the NUDS record) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or
 				may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
