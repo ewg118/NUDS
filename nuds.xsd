@@ -1013,6 +1013,7 @@
 				<xs:element minOccurs="0" ref="date"/>
 				<xs:element minOccurs="0" ref="dateRange"/>
 			</xs:choice>
+			<xs:element minOccurs="0" maxOccurs="1" ref="dateOnObject"/>
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="denomination"/>
 			<xs:element minOccurs="0" ref="manufacture"/>
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="material"/>
