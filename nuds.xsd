@@ -1017,6 +1017,7 @@
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="denomination"/>
 			<xs:element minOccurs="0" ref="manufacture"/>
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="material"/>
+			<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>
 			<xs:element minOccurs="0" ref="authority"/>
 			<xs:element minOccurs="0" ref="geographic"/>
 			<xs:element minOccurs="0" ref="obverse"/>
@@ -1318,7 +1319,8 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="geogname"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="geogname"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
