@@ -340,13 +340,13 @@
 			<xs:documentation>Statement of rights recording the NUDS record</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
 				<xs:element minOccurs="0" ref="copyrightHolder"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="license"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="rights"/>
 				<xs:element minOccurs="0" ref="preferCite"/>
 				<xs:element minOccurs="0" ref="date"/>
-			</xs:all>
+			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="copyrightHolder">
@@ -1315,13 +1315,13 @@
 
 	<xs:element name="findspot">
 		<xs:annotation>
-			<xs:documentation>The &lt;findspot&gt; element may contain a &lt;geogname&gt; that links to a gazetteer such as Geonames.org.</xs:documentation>
+			<xs:documentation>The &lt;findspot&gt; element may contain a &lt;geogname&gt; that links to a gazetteer such as Geonames.org and descriptive text in &lt;description&gt;</xs:documentation>
 		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
+		<xs:complexType>			
+			<xs:all>
+				<xs:element minOccurs="0" maxOccurs="1" ref="description"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="geogname"/>
-			</xs:sequence>
+			</xs:all>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
