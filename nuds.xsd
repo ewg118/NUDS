@@ -671,6 +671,7 @@
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
+	
 	<xs:element name="countermark">
 		<xs:annotation>
 			<xs:documentation>A &lt;countermark&gt; is a physical characteristic, separated from typological description. It may optionally contain
@@ -679,6 +680,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:choice>
+				<xs:element ref="description" maxOccurs="unbounded"/>
 				<xs:element ref="symbol" maxOccurs="unbounded"/>
 				<xs:sequence>
 					<xs:element minOccurs="0" ref="obverse"/>
@@ -699,6 +701,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:choice>
+				<xs:element ref="description" maxOccurs="unbounded"/>
 				<xs:element ref="symbol" maxOccurs="unbounded"/>
 				<xs:sequence>
 					<xs:element minOccurs="0" ref="obverse"/>
@@ -719,6 +722,7 @@
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice>
+				<xs:element ref="description" maxOccurs="unbounded"/>
 				<xs:element ref="symbol" maxOccurs="unbounded"/>
 				<xs:sequence>
 					<xs:element minOccurs="0" ref="obverse"/>
