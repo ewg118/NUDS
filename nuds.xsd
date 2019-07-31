@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2018a
+	VERSION: 2019a
 	
-	DATE: 20180111
+	DATE: 20190731
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -23,6 +23,7 @@
 		variety of other minor fixes with multiple symbols or minor re-ordering. For more information about the elements, see http://nomisma.org/nuds
 	20180111: Added more elements into physDesc that are used in the ANS collection. Relaxed date requirement for ChronItem. 
 		Added @for to license to allow more than one for associatiation with data rights and image rights
+	20190731: Added source for maintenanceEvent in order to capture a URI for data source (e.g., Google Spreadsheet)
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
@@ -252,7 +253,8 @@
 				<xs:element ref="eventDateTime"/>
 				<xs:element ref="agentType"/>
 				<xs:element ref="agent"/>
-				<xs:element minOccurs="0" ref="eventDescription"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="eventDescription"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="source"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
@@ -332,6 +334,17 @@
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 		</xs:complexType>
+	</xs:element>
+	<xs:element name="source">
+		<xs:annotation>
+			<xs:documentation>A machine-readable data source from which a record has been derived in the &lt;maintenanceEvent&gt;. It must be an HTTP URI. It is
+				typically used to link to a Google Spreadsheet in the spreadsheet import interface.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="https?://(-\.)?([^\s/?\.#-]+\.?)+(/[^\s]*)?$"/>
+			</xs:restriction>
+		</xs:simpleType>
 	</xs:element>
 
 	<!-- rightsStmt elements -->
@@ -671,7 +684,7 @@
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
-	
+
 	<xs:element name="countermark">
 		<xs:annotation>
 			<xs:documentation>A &lt;countermark&gt; is a physical characteristic, separated from typological description. It may optionally contain
@@ -1319,9 +1332,10 @@
 
 	<xs:element name="findspot">
 		<xs:annotation>
-			<xs:documentation>The &lt;findspot&gt; element may contain a &lt;geogname&gt; that links to a gazetteer such as Geonames.org and descriptive text in &lt;description&gt;</xs:documentation>
+			<xs:documentation>The &lt;findspot&gt; element may contain a &lt;geogname&gt; that links to a gazetteer such as Geonames.org and descriptive text in
+				&lt;description&gt;</xs:documentation>
 		</xs:annotation>
-		<xs:complexType>			
+		<xs:complexType>
 			<xs:all>
 				<xs:element minOccurs="0" maxOccurs="1" ref="description"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="geogname"/>
@@ -1858,8 +1872,9 @@
 
 	<xs:element name="reference">
 		<xs:annotation>
-			<xs:documentation>A bibliographic reference (by which a coin is identified in a type corpus) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or
-				may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
+			<xs:documentation>A bibliographic reference (by which a coin is identified in a type corpus) contains a loosely-structured bibliographic or
+				electronic citation of which the sub-components may or may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP
+				resources.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -1878,11 +1893,12 @@
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
-	
+
 	<xs:element name="citation">
 		<xs:annotation>
-			<xs:documentation>A bibliographic citation (explicit reference of the physical object detailed in the NUDS record) contains a loosely-structured bibliographic or electronic citation of which the sub-components may or
-				may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP resources.</xs:documentation>
+			<xs:documentation>A bibliographic citation (explicit reference of the physical object detailed in the NUDS record) contains a loosely-structured
+				bibliographic or electronic citation of which the sub-components may or may not be explicitly tagged. Xlink and semantic attributes are
+				available to link to HTTP resources.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
