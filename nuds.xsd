@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	NUMISMATIC DESCRIPTION STANDARD (NUDS) DRAFT
+	NUMISMATIC DESCRIPTION STANDARD (NUDS)
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2019a
+	VERSION: 2020a
 	
-	DATE: 20190731
+	DATE: 20200515
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -24,6 +24,7 @@
 	20180111: Added more elements into physDesc that are used in the ANS collection. Relaxed date requirement for ChronItem. 
 		Added @for to license to allow more than one for associatiation with data rights and image rights
 	20190731: Added source for maintenanceEvent in order to capture a URI for data source (e.g., Google Spreadsheet)
+	20200515: Enabling the namespacing of EpiDoc TEI into symbols
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
@@ -1252,10 +1253,15 @@
 		<xs:annotation>
 			<xs:documentation>A symbolic character, pictograph, or monogram appearing on a coin. The symbol type can be defined by @localType attributes on a
 				project-by-project basis. Use XLink attributes to link to URIs that define symbols in thesaurus systems. The semantic attribute can be used to
-				enforce stronger semantic meaning by means of RDF properties from the Nomisma ontology (e.g., nmo:hasMonogram). The @position attribute may be
-				used for arbitrary definitions of position on the coin.</xs:documentation>
+				enforce stronger semantic meaning by means of RDF properties from the Nomisma ontology (e.g., nmo:hasControlmark). The @position attribute may be
+				used for arbitrary definitions of position on the coin. For additional complexity (uncertainty, positioning of characters within the symbol, etc.),
+				EpiDoc TEI can be namespaced in a tei:div.</xs:documentation>
 		</xs:annotation>
+		
 		<xs:complexType mixed="true">
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="tei:div"/>
+			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="position">
@@ -1269,6 +1275,7 @@
 			</xs:attribute>
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
+			<xs:attributeGroup ref="nuds_a.scriptCode"/>
 		</xs:complexType>
 	</xs:element>
 
