@@ -473,7 +473,7 @@
 				</xs:restriction>
 			</xs:simpleContent>
 		</xs:complexType>
-		
+
 	</xs:element>
 
 	<!-- *********** END control ********** -->
@@ -892,6 +892,7 @@
 				<xs:element minOccurs="0" ref="diameter"/>
 				<xs:element minOccurs="0" ref="height"/>
 				<xs:element minOccurs="0" ref="thickness"/>
+				<xs:element minOccurs="0" ref="length"/>
 				<xs:element minOccurs="0" ref="weight"/>
 				<xs:element minOccurs="0" ref="width"/>
 			</xs:all>
@@ -976,6 +977,25 @@
 		<xs:annotation>
 			<xs:documentation>The &lt;width&gt; should be used with &lt;height&gt; and not &lt;diameter&gt;. If viewing the obverse, the width is the x-axis
 				measurement in decimal numbers.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:restriction base="xs:anyType">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal"/>
+					</xs:simpleType>
+					<xs:attribute ref="xml:id"/>
+					<xs:attribute ref="xml:lang"/>
+					<xs:attributeGroup ref="m.default"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="length">
+		<xs:annotation>
+			<xs:documentation>The &lt;length&gt; should be used with one or two other &lt;length&gt; elements and not other measurement elements, when the
+				height, width, and thickness cannot be clearly ascertained. The measurement should be in decimal numbers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -1253,11 +1273,11 @@
 		<xs:annotation>
 			<xs:documentation>A symbolic character, pictograph, or monogram appearing on a coin. The symbol type can be defined by @localType attributes on a
 				project-by-project basis. Use XLink attributes to link to URIs that define symbols in thesaurus systems. The semantic attribute can be used to
-				enforce stronger semantic meaning by means of RDF properties from the Nomisma ontology (e.g., nmo:hasControlmark). The @position attribute may be
-				used for arbitrary definitions of position on the coin. For additional complexity (uncertainty, positioning of characters within the symbol, etc.),
-				EpiDoc TEI can be namespaced in a tei:div.</xs:documentation>
+				enforce stronger semantic meaning by means of RDF properties from the Nomisma ontology (e.g., nmo:hasControlmark). The @position attribute may
+				be used for arbitrary definitions of position on the coin. For additional complexity (uncertainty, positioning of characters within the symbol,
+				etc.), EpiDoc TEI can be namespaced in a tei:div.</xs:documentation>
 		</xs:annotation>
-		
+
 		<xs:complexType mixed="true">
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
 				<xs:element ref="tei:div"/>
