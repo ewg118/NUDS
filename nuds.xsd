@@ -1479,23 +1479,7 @@
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="citation"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>
-			<xs:attribute name="variant">
-				<xs:simpleType>
-					<xs:union>
-						<xs:simpleType>
-							<xs:restriction base="xs:token">
-								<xs:enumeration value="true"/>
-							</xs:restriction>
-						</xs:simpleType>
-						<xs:simpleType>
-							<xs:restriction base="xs:token">
-								<xs:enumeration value="false"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:union>
-				</xs:simpleType>
-			</xs:attribute>
+			<xs:attribute ref="xml:lang"/>			
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
@@ -1977,6 +1961,22 @@
 			</xs:choice>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
+			<xs:attribute name="variant">
+				<xs:simpleType>
+					<xs:union>
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="true"/>
+							</xs:restriction>
+						</xs:simpleType>
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="false"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:union>
+				</xs:simpleType>
+			</xs:attribute>
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
