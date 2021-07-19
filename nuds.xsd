@@ -580,7 +580,9 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element minOccurs="0" maxOccurs="1" ref="authenticity"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="authenticity"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="originalIntendedUse"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="peculiarityOfProduction"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="axis"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="channelOrientation"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="chemicalAnalysis"/>
@@ -600,9 +602,23 @@
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
+
 	<xs:element name="authenticity">
 		<xs:annotation>
-			<xs:documentation>Authenticity of the object (e.g., counterfeit, imitation). Recommended to link to a controlled list via XLink
+			<xs:documentation>The contemporary legal status of a numismatic object: whether it was produced by an authority that had the relevant rights to do
+				so, or is a contemporary or modern imitation. Recommended to link to a controlled list via XLink attributes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="originalIntendedUse">
+		<xs:annotation>
+			<xs:documentation>Original intended use of the object (e.g., proof, trial piece). Recommended to link to a controlled list via XLink
 				attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
@@ -612,6 +628,21 @@
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:element name="peculiarityOfProduction">
+		<xs:annotation>
+			<xs:documentation>A notable, characteristic or unusual physical feature of an individual numismatic object that marks it out from other examples of
+				the same group, or of a group of numismatic objects that marks it out from other groups. Recommended to link to a controlled list via XLink
+				attributes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="axis">
 		<xs:annotation>
 			<xs:documentation>Axis is the orientation of the obverse to the reverse. This element accepts any string (to accommodate clock values, such as
