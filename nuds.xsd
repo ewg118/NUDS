@@ -4,9 +4,9 @@
 	
 	SCHEMA TYPE: W3C Schema
 	
-	VERSION: 2020a
+	VERSION: 2022a
 	
-	DATE: 20200515
+	DATE: 20220224
 	
 	EDITORS: Ethan Gruber, American Numismatic Society
 	
@@ -25,6 +25,7 @@
 		Added @for to license to allow more than one for associatiation with data rights and image rights
 	20190731: Added source for maintenanceEvent in order to capture a URI for data source (e.g., Google Spreadsheet)
 	20200515: Enabling the namespacing of EpiDoc TEI into symbols
+	20220224: Added specific gravity into measurementsSet, enabling xlink attributes for chemicalAnalysis components
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
@@ -714,6 +715,7 @@
 			<xs:attribute ref="percentage" use="required"/>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
@@ -925,6 +927,7 @@
 				<xs:element minOccurs="0" ref="height"/>
 				<xs:element minOccurs="0" ref="thickness"/>
 				<xs:element minOccurs="0" ref="length"/>
+				<xs:element minOccurs="0" ref="specificGravity"/>
 				<xs:element minOccurs="0" ref="weight"/>
 				<xs:element minOccurs="0" ref="width"/>
 			</xs:all>
@@ -972,6 +975,24 @@
 	<xs:element name="thickness">
 		<xs:annotation>
 			<xs:documentation>Z-axis thickness or depth of the object.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:restriction base="xs:anyType">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal"/>
+					</xs:simpleType>
+					<xs:attribute ref="xml:id"/>
+					<xs:attribute ref="xml:lang"/>
+					<xs:attributeGroup ref="m.default"/>
+					<xs:attributeGroup ref="nuds_a.dimensions.attributes"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="specificGravity">
+		<xs:annotation>
+			<xs:documentation>Specific gravity that measures the density of known purities in a coin, encoded in decimal numbers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
