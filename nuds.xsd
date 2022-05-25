@@ -26,7 +26,7 @@
 	20190731: Added source for maintenanceEvent in order to capture a URI for data source (e.g., Google Spreadsheet)
 	20200515: Enabling the namespacing of EpiDoc TEI into symbols
 	20220224: Added specific gravity into measurementsSet, enabling xlink attributes for chemicalAnalysis components
-	20220524: Added authenticity into typeDesc for coin types
+	20220525: Added authenticity into authority for coin types
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
@@ -1122,8 +1122,7 @@
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="denomination"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="manufacture"/>
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="material"/>
-			<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>
-			<xs:element minOccurs="0" maxOccurs="1" ref="authenticity"/>
+			<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>			
 			<xs:element minOccurs="0" maxOccurs="1" ref="authority"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="geographic"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="obverse"/>
@@ -1229,7 +1228,8 @@
 				<xs:element ref="persname"/>
 				<xs:element ref="corpname"/>
 				<xs:element ref="famname"/>
-			</xs:choice>
+				<xs:element minOccurs="0" maxOccurs="1" ref="authenticity"/>
+			</xs:choice>	
 		</xs:complexType>
 	</xs:element>
 
