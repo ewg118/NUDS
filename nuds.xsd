@@ -27,17 +27,22 @@
 	20200515: Enabling the namespacing of EpiDoc TEI into symbols
 	20220224: Added specific gravity into measurementsSet, enabling xlink attributes for chemicalAnalysis components
 	20220525: Added authenticity into authority for coin types
+	20230516: Added archaeological context fields in findspotDesc
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
-	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-	vc:minVersion="1.1" version="2017a">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tei="http://www.tei-c.org/ns/1.0"
+	xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1" version="2017a">
 	<!-- import default xml and xlink schemas -->
-	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd" id="xlink"/>
-	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2007/08/xml.xsd" id="xml"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink"
+		schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd" id="xlink"/>
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"
+		schemaLocation="http://www.w3.org/2007/08/xml.xsd" id="xml"/>
 
 	<!--import EpiDoc -->
-	<xs:import namespace="http://www.tei-c.org/ns/1.0" schemaLocation="http://www.stoa.org/epidoc/schema/dev/tei-epidoc.xsd" id="tei"/>
+	<!--<xs:import namespace="http://www.tei-c.org/ns/1.0"
+		schemaLocation="http://www.stoa.org/epidoc/schema/dev/tei-epidoc.xsd" id="tei"/>-->
 
 	<xs:element name="nuds">
 		<xs:annotation>
@@ -53,8 +58,9 @@
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="recordType" use="required">
 				<xs:annotation>
-					<xs:documentation>The @recordType is a required attribute for the &lt;nuds&gt; root element. A record must be 'conceptual' (a coin type or
-						die typology) or 'physical'.</xs:documentation>
+					<xs:documentation>The @recordType is a required attribute for the &lt;nuds&gt;
+						root element. A record must be 'conceptual' (a coin type or die typology) or
+						'physical'.</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -69,12 +75,15 @@
 	<!-- ********** control ************ -->
 	<xs:element name="control">
 		<xs:annotation>
-			<xs:documentation>The area of the instance that contains control information about its identity, creation, maintenance, status, and the rules and
-				authorities used in the composition of the description. It must contain a unique identifier for the instance within the &lt;recordId&gt; element
-				and other associated identifiers may be given in &lt;otherRecordId&gt;. There must be a description of the agency responsible for its creation
-				and maintenance in &lt;maintenanceAgency&gt; as well as statements about its current drafting status in &lt;maintenanceStatus&gt; and the
-				creation, maintenance, and disposition of the instance in &lt;maintenanceHistory&gt;. The &lt;control&gt; is based on EAC-CPF.
-			</xs:documentation>
+			<xs:documentation>The area of the instance that contains control information about its
+				identity, creation, maintenance, status, and the rules and authorities used in the
+				composition of the description. It must contain a unique identifier for the instance
+				within the &lt;recordId&gt; element and other associated identifiers may be given in
+				&lt;otherRecordId&gt;. There must be a description of the agency responsible for its
+				creation and maintenance in &lt;maintenanceAgency&gt; as well as statements about
+				its current drafting status in &lt;maintenanceStatus&gt; and the creation,
+				maintenance, and disposition of the instance in &lt;maintenanceHistory&gt;. The
+				&lt;control&gt; is based on EAC-CPF. </xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -94,8 +103,9 @@
 
 	<xs:element name="recordId">
 		<xs:annotation>
-			<xs:documentation>The Record ID must be a unique identifier for the record within the data system. It should conform to xs:anyURI since, ideally,
-				the ID should be part of the records URI.</xs:documentation>
+			<xs:documentation>The Record ID must be a unique identifier for the record within the
+				data system. It should conform to xs:anyURI since, ideally, the ID should be part of
+				the records URI.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:simpleContent>
@@ -109,10 +119,13 @@
 
 	<xs:element name="otherRecordId">
 		<xs:annotation>
-			<xs:documentation>An element in &lt;control&gt; for the provision of alternative record identifiers to the mandatory identifier in &lt;recordId&gt;
-				that may be associated with the NUDS instance. These might include the identifiers of merged NUDS instances representing the same entity or
-				those of records that are no longer current but had some part in the history and maintenance of the NUDS instance. It may be combined with the
-				@semantic attribute to apply greater semantic meaning by means of RDF properties, which can be implemented when transforming NUDS into
+			<xs:documentation>An element in &lt;control&gt; for the provision of alternative record
+				identifiers to the mandatory identifier in &lt;recordId&gt; that may be associated
+				with the NUDS instance. These might include the identifiers of merged NUDS instances
+				representing the same entity or those of records that are no longer current but had
+				some part in the history and maintenance of the NUDS instance. It may be combined
+				with the @semantic attribute to apply greater semantic meaning by means of RDF
+				properties, which can be implemented when transforming NUDS into
 				RDF.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
@@ -127,7 +140,8 @@
 
 	<xs:element name="maintenanceStatus">
 		<xs:annotation>
-			<xs:documentation>A required element within &lt;control&gt; that records the current drafting status of an NUDS instance.</xs:documentation>
+			<xs:documentation>A required element within &lt;control&gt; that records the current
+				drafting status of an NUDS instance.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -149,13 +163,18 @@
 	</xs:element>
 	<xs:element name="publicationStatus">
 		<xs:annotation>
-			<xs:documentation>The current publication status of the NUDS record may be specified in the &lt;publicationStatus&gt; element. If according to local
-				practice the instance is still in the process of being approved for publication, the value should be "inProcess," while if approved for
-				publication, the value should be "approved." With respect to Numishare integration, "approved" means that the record will be designated for both
-				RDF export and general Solr indexing for the browse interface. "approvedSubtype" records are made available in RDF and indexed into Solr and are
-				available in the Atom feed search handler for API requests, but are not visible in the general browse interface. "deprecatedType" coin type
-				records should not be indexed into Solr, but ought to exist in RDF exports for expression networks of type concordances, even if they are not to
-				be used as current accepted type references.</xs:documentation>
+			<xs:documentation>The current publication status of the NUDS record may be specified in
+				the &lt;publicationStatus&gt; element. If according to local practice the instance
+				is still in the process of being approved for publication, the value should be
+				"inProcess," while if approved for publication, the value should be "approved." With
+				respect to Numishare integration, "approved" means that the record will be
+				designated for both RDF export and general Solr indexing for the browse interface.
+				"approvedSubtype" records are made available in RDF and indexed into Solr and are
+				available in the Atom feed search handler for API requests, but are not visible in
+				the general browse interface. "deprecatedType" coin type records should not be
+				indexed into Solr, but ought to exist in RDF exports for expression networks of type
+				concordances, even if they are not to be used as current accepted type
+				references.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -177,9 +196,11 @@
 	<!-- maintenanceAgency elements -->
 	<xs:element name="maintenanceAgency">
 		<xs:annotation>
-			<xs:documentation>The institution or service responsible for the creation, maintenance, and/or dissemination of the NUDS instance. This must include
-				the &lt;agencyName&gt; element and it is recommended to include the optional &lt;agencyCode&gt; and / or &lt;otherAgencyCode&gt; elements as
-				well to unambiguously identify the institution or service.</xs:documentation>
+			<xs:documentation>The institution or service responsible for the creation, maintenance,
+				and/or dissemination of the NUDS instance. This must include the &lt;agencyName&gt;
+				element and it is recommended to include the optional &lt;agencyCode&gt; and / or
+				&lt;otherAgencyCode&gt; elements as well to unambiguously identify the institution
+				or service.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -192,8 +213,9 @@
 	</xs:element>
 	<xs:element name="agencyCode">
 		<xs:annotation>
-			<xs:documentation>The code that represents the institution or service responsible for the creation, maintenance and/or dissemination of the NUDS
-				instance. </xs:documentation>
+			<xs:documentation>The code that represents the institution or service responsible for
+				the creation, maintenance and/or dissemination of the NUDS instance.
+			</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -205,8 +227,9 @@
 	</xs:element>
 	<xs:element name="otherAgencyCode">
 		<xs:annotation>
-			<xs:documentation> Alternate code representing the instituion or service responsible for the creation, maintenance, and/or dissemination of the NUDS
-				instance. </xs:documentation>
+			<xs:documentation> Alternate code representing the instituion or service responsible for
+				the creation, maintenance, and/or dissemination of the NUDS instance.
+			</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -220,8 +243,8 @@
 
 	<xs:element name="agencyName">
 		<xs:annotation>
-			<xs:documentation>The name of the institution or service responsible for the creation, maintenance, and/or dissemination of the NUDS instance.
-			</xs:documentation>
+			<xs:documentation>The name of the institution or service responsible for the creation,
+				maintenance, and/or dissemination of the NUDS instance. </xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -232,9 +255,12 @@
 	<!-- maintenanceHistory elements -->
 	<xs:element name="maintenanceHistory">
 		<xs:annotation>
-			<xs:documentation>A required wrapper element within &lt;control&gt; to record the history and creation of the EAC-CPF instance. There must be at
-				least one &lt;maintenanceEvent&gt; element, usually recording the creation of the instance, but there may be many other &lt;maintenanceEvent&gt;
-				elements documenting the milestone events or activities in the maintenance of the instance. </xs:documentation>
+			<xs:documentation>A required wrapper element within &lt;control&gt; to record the
+				history and creation of the EAC-CPF instance. There must be at least one
+				&lt;maintenanceEvent&gt; element, usually recording the creation of the instance,
+				but there may be many other &lt;maintenanceEvent&gt; elements documenting the
+				milestone events or activities in the maintenance of the instance.
+			</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -247,8 +273,9 @@
 
 	<xs:element name="maintenanceEvent">
 		<xs:annotation>
-			<xs:documentation>A repeatable event within &lt;maintenanceHistory&gt; that details modification dates and descriptions of changes, including the
-				person or process responsible for making the change.</xs:documentation>
+			<xs:documentation>A repeatable event within &lt;maintenanceHistory&gt; that details
+				modification dates and descriptions of changes, including the person or process
+				responsible for making the change.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -265,9 +292,12 @@
 	</xs:element>
 	<xs:element name="eventType">
 		<xs:annotation>
-			<xs:documentation>The type of maintenance event for the NUDS instance. On first creation, the event type would be "created". A "derived" event type
-				is available to indicate that the record was derived from another descriptive system, e.g., to generate a coin type record from a curated
-				physical coin record. If revisions are made to an existing NUDS instance, the event type would be "revised". </xs:documentation>
+			<xs:documentation>The type of maintenance event for the NUDS instance. On first
+				creation, the event type would be "created". A "derived" event type is available to
+				indicate that the record was derived from another descriptive system, e.g., to
+				generate a coin type record from a curated physical coin record. If revisions are
+				made to an existing NUDS instance, the event type would be "revised".
+			</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -297,14 +327,16 @@
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="standardDateTime" type="m.data.standardDateTime" use="required">
 				<xs:annotation>
-					<xs:documentation>The date or date and time represented in a standard form for computer processing. </xs:documentation>
+					<xs:documentation>The date or date and time represented in a standard form for
+						computer processing. </xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="agentType">
 		<xs:annotation>
-			<xs:documentation>The type of agent responsible for modifying the NUDS record: "human" or "machine".</xs:documentation>
+			<xs:documentation>The type of agent responsible for modifying the NUDS record: "human"
+				or "machine".</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -322,7 +354,8 @@
 	</xs:element>
 	<xs:element name="agent">
 		<xs:annotation>
-			<xs:documentation>The name of the agent responsible for the &lt;maintenanceEvent&gt;.</xs:documentation>
+			<xs:documentation>The name of the agent responsible for the
+				&lt;maintenanceEvent&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -331,7 +364,8 @@
 	</xs:element>
 	<xs:element name="eventDescription">
 		<xs:annotation>
-			<xs:documentation>The description of a maintenance event in the life of the NUDS instance. </xs:documentation>
+			<xs:documentation>The description of a maintenance event in the life of the NUDS
+				instance. </xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -340,8 +374,9 @@
 	</xs:element>
 	<xs:element name="source">
 		<xs:annotation>
-			<xs:documentation>A machine-readable data source from which a record has been derived in the &lt;maintenanceEvent&gt;. It must be an HTTP URI. It is
-				typically used to link to a Google Spreadsheet in the spreadsheet import interface.</xs:documentation>
+			<xs:documentation>A machine-readable data source from which a record has been derived in
+				the &lt;maintenanceEvent&gt;. It must be an HTTP URI. It is typically used to link
+				to a Google Spreadsheet in the spreadsheet import interface.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -374,8 +409,9 @@
 	</xs:element>
 	<xs:element name="copyrightHolder">
 		<xs:annotation>
-			<xs:documentation>The holder of the copyright of the object, which may be different from the publishing agency defined in the
-				&lt;maintenanceAgency&gt; in the &lt;control&gt;.</xs:documentation>
+			<xs:documentation>The holder of the copyright of the object, which may be different from
+				the publishing agency defined in the &lt;maintenanceAgency&gt; in the
+				&lt;control&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -386,16 +422,18 @@
 	</xs:element>
 	<xs:element name="license">
 		<xs:annotation>
-			<xs:documentation>A statement of the metadata license. It is recommended to link to a license provided by Creative Commons for images or other
-				digital facsimiles or the Open Data Commons for the metadata.</xs:documentation>
+			<xs:documentation>A statement of the metadata license. It is recommended to link to a
+				license provided by Creative Commons for images or other digital facsimiles or the
+				Open Data Commons for the metadata.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="for">
 				<xs:annotation>
-					<xs:documentation>A restricted list to associate the license statement to the particular type of resource for which the license has been
-						granted (data, images).</xs:documentation>
+					<xs:documentation>A restricted list to associate the license statement to the
+						particular type of resource for which the license has been granted (data,
+						images).</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -410,8 +448,8 @@
 	</xs:element>
 	<xs:element name="rights">
 		<xs:annotation>
-			<xs:documentation>A statement regarding the rights of the object. It is recommended to link to a statement on
-				rightsstatements.org.</xs:documentation>
+			<xs:documentation>A statement regarding the rights of the object. It is recommended to
+				link to a statement on rightsstatements.org.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -422,7 +460,8 @@
 	</xs:element>
 	<xs:element name="preferCite">
 		<xs:annotation>
-			<xs:documentation>A text string that defines the preferred method or format of citation for the NUDS record.</xs:documentation>
+			<xs:documentation>A text string that defines the preferred method or format of citation
+				for the NUDS record.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -434,9 +473,11 @@
 	<!-- semanticDeclaration elements -->
 	<xs:element name="semanticDeclaration">
 		<xs:annotation>
-			<xs:documentation>The Semantic Declaration is based on similar declaration elements from EAC-CPF. This is a space for defining prefixes and RDF
-				namespaces that are essential components in serializing NUDS to RDF when the @semantic attribute has been applied to a NUDS element (for
-				example, otherRecordId). The &lt;semanticDeclaration&gt; requires two elements, &lt;prefix&gt; and &lt;namespace&gt;</xs:documentation>
+			<xs:documentation>The Semantic Declaration is based on similar declaration elements from
+				EAC-CPF. This is a space for defining prefixes and RDF namespaces that are essential
+				components in serializing NUDS to RDF when the @semantic attribute has been applied
+				to a NUDS element (for example, otherRecordId). The &lt;semanticDeclaration&gt;
+				requires two elements, &lt;prefix&gt; and &lt;namespace&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -448,8 +489,10 @@
 	</xs:element>
 	<xs:element name="prefix">
 		<xs:annotation>
-			<xs:documentation>The &lt;prefix&gt; is a required element in &lt;semanticDeclaration&gt;. It conforms to norms of prefixes in SPARQL or TTL (or XML
-				namespaces in RDF/XML). E.g., "dcterms" for Dublin Core Terms.</xs:documentation>
+			<xs:documentation>The &lt;prefix&gt; is a required element in
+				&lt;semanticDeclaration&gt;. It conforms to norms of prefixes in SPARQL or TTL (or
+				XML namespaces in RDF/XML). E.g., "dcterms" for Dublin Core
+				Terms.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -461,7 +504,8 @@
 	</xs:element>
 	<xs:element name="namespace">
 		<xs:annotation>
-			<xs:documentation>The URI namespace for an RDF ontology, required for &lt;semanticDeclaration&gt;</xs:documentation>
+			<xs:documentation>The URI namespace for an RDF ontology, required for
+				&lt;semanticDeclaration&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -483,8 +527,10 @@
 	<!-- *********** DESCMETA ********** -->
 	<xs:element name="descMeta">
 		<xs:annotation>
-			<xs:documentation>The Descriptive Metadata element is one of two required elements within &lt;nuds&gt;. It is the container for all descriptive
-				metadata containers for an object or typology. &lt;typeDesc&gt; is the only required child element.</xs:documentation>
+			<xs:documentation>The Descriptive Metadata element is one of two required elements
+				within &lt;nuds&gt;. It is the container for all descriptive metadata containers for
+				an object or typology. &lt;typeDesc&gt; is the only required child
+				element.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -506,7 +552,8 @@
 
 	<xs:element name="title">
 		<xs:annotation>
-			<xs:documentation>Object title. It may be repeated if the title is to be available in numerous languages</xs:documentation>
+			<xs:documentation>Object title. It may be repeated if the title is to be available in
+				numerous languages</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -517,8 +564,9 @@
 
 	<xs:element name="descriptionSet">
 		<xs:annotation>
-			<xs:documentation>Description Set is a container for an unliminted number of &lt;description&gt; elements in order to provide descriptive prose
-				about an object, such as historical or artistic context.</xs:documentation>
+			<xs:documentation>Description Set is a container for an unliminted number of
+				&lt;description&gt; elements in order to provide descriptive prose about an object,
+				such as historical or artistic context.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -528,7 +576,8 @@
 	</xs:element>
 	<xs:element name="subjectSet">
 		<xs:annotation>
-			<xs:documentation>Subject Set is a container for an unliminted number of &lt;subject&gt; elements.</xs:documentation>
+			<xs:documentation>Subject Set is a container for an unliminted number of &lt;subject&gt;
+				elements.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -538,7 +587,8 @@
 	</xs:element>
 	<xs:element name="noteSet">
 		<xs:annotation>
-			<xs:documentation>Note Set is a container for an unliminted number of &lt;note&gt; elements.</xs:documentation>
+			<xs:documentation>Note Set is a container for an unliminted number of &lt;note&gt;
+				elements.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -549,8 +599,9 @@
 
 	<xs:element name="note">
 		<xs:annotation>
-			<xs:documentation>A note is a child of &lt;noteSet&gt;. Notes are intended to capture brief miscellaneous statements about the NUDS instance. For
-				greater historical, artistic, etc. context, use &lt;descriptionSet&gt; instead.</xs:documentation>
+			<xs:documentation>A note is a child of &lt;noteSet&gt;. Notes are intended to capture
+				brief miscellaneous statements about the NUDS instance. For greater historical,
+				artistic, etc. context, use &lt;descriptionSet&gt; instead.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -561,10 +612,13 @@
 
 	<xs:element name="subject">
 		<xs:annotation>
-			<xs:documentation>A subject falls within &lt;subjectSet&gt; and is intended to capture arbitrary subject terms related to the object. XLink
-				attributes are available to link to subject term URIs in vocabulary systems, such as Wikidata or LSCH. The @semantic attribute enables greater
-				semantic meaning to be applied in the transformation of NUDS into RDF, and @localType also enables greater differentiation between types of
-				subjects. The @localType is used by Numishare to publish different types of subject facets.</xs:documentation>
+			<xs:documentation>A subject falls within &lt;subjectSet&gt; and is intended to capture
+				arbitrary subject terms related to the object. XLink attributes are available to
+				link to subject term URIs in vocabulary systems, such as Wikidata or LSCH. The
+				@semantic attribute enables greater semantic meaning to be applied in the
+				transformation of NUDS into RDF, and @localType also enables greater differentiation
+				between types of subjects. The @localType is used by Numishare to publish different
+				types of subject facets.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -577,8 +631,9 @@
 	<!-- *********** PHYSDESC ********** -->
 	<xs:element name="physDesc">
 		<xs:annotation>
-			<xs:documentation>The Physical Description element of &lt;descMeta&gt; is a container for the physical characteristics of an object. It should not
-				be used for typological records.</xs:documentation>
+			<xs:documentation>The Physical Description element of &lt;descMeta&gt; is a container
+				for the physical characteristics of an object. It should not be used for typological
+				records.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -607,8 +662,10 @@
 
 	<xs:element name="authenticity">
 		<xs:annotation>
-			<xs:documentation>The contemporary legal status of a numismatic object: whether it was produced by an authority that had the relevant rights to do
-				so, or is a contemporary or modern imitation. Recommended to link to a controlled list via XLink attributes.</xs:documentation>
+			<xs:documentation>The contemporary legal status of a numismatic object: whether it was
+				produced by an authority that had the relevant rights to do so, or is a contemporary
+				or modern imitation. Recommended to link to a controlled list via XLink
+				attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -620,8 +677,8 @@
 
 	<xs:element name="originalIntendedUse">
 		<xs:annotation>
-			<xs:documentation>Original intended use of the object (e.g., proof, trial piece). Recommended to link to a controlled list via XLink
-				attributes.</xs:documentation>
+			<xs:documentation>Original intended use of the object (e.g., proof, trial piece).
+				Recommended to link to a controlled list via XLink attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -633,9 +690,10 @@
 
 	<xs:element name="peculiarityOfProduction">
 		<xs:annotation>
-			<xs:documentation>A notable, characteristic or unusual physical feature of an individual numismatic object that marks it out from other examples of
-				the same group, or of a group of numismatic objects that marks it out from other groups. Recommended to link to a controlled list via XLink
-				attributes.</xs:documentation>
+			<xs:documentation>A notable, characteristic or unusual physical feature of an individual
+				numismatic object that marks it out from other examples of the same group, or of a
+				group of numismatic objects that marks it out from other groups. Recommended to link
+				to a controlled list via XLink attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -647,8 +705,10 @@
 
 	<xs:element name="axis">
 		<xs:annotation>
-			<xs:documentation>Axis is the orientation of the obverse to the reverse. This element accepts any string (to accommodate clock values, such as
-				"6:00", but it is recommended to input an integer value, as only numeric values are indexed into Nomisma for analysis.</xs:documentation>
+			<xs:documentation>Axis is the orientation of the obverse to the reverse. This element
+				accepts any string (to accommodate clock values, such as "6:00", but it is
+				recommended to input an integer value, as only numeric values are indexed into
+				Nomisma for analysis.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="clock"/>
@@ -670,8 +730,9 @@
 	</xs:element>
 	<xs:element name="chemicalAnalysis">
 		<xs:annotation>
-			<xs:documentation>Container element for chemical analyses of an object. It requires &lt;analysisType&gt;, &lt;date&gt; of analysis, and the
-				&lt;components&gt; container.</xs:documentation>
+			<xs:documentation>Container element for chemical analyses of an object. It requires
+				&lt;analysisType&gt;, &lt;date&gt; of analysis, and the &lt;components&gt;
+				container.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:all>
@@ -684,7 +745,8 @@
 	</xs:element>
 	<xs:element name="analysisType">
 		<xs:annotation>
-			<xs:documentation>Type of &lt;chemicalAnalysis&gt;. It is recommended to implement terms from a controlled list.</xs:documentation>
+			<xs:documentation>Type of &lt;chemicalAnalysis&gt;. It is recommended to implement terms
+				from a controlled list.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -695,7 +757,8 @@
 	</xs:element>
 	<xs:element name="components">
 		<xs:annotation>
-			<xs:documentation>Container of components of a &lt;chemicalAnalysis&gt;. There may be more than one component, each required a @percentage decimal
+			<xs:documentation>Container of components of a &lt;chemicalAnalysis&gt;. There may be
+				more than one component, each required a @percentage decimal
 				value.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
@@ -709,7 +772,8 @@
 	</xs:element>
 	<xs:element name="component">
 		<xs:annotation>
-			<xs:documentation>Individual component of a &lt;chemicalAnalysis&gt;. A @percentage attribute is required. The total percentages should not exceed
+			<xs:documentation>Individual component of a &lt;chemicalAnalysis&gt;. A @percentage
+				attribute is required. The total percentages should not exceed
 				100.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
@@ -722,8 +786,9 @@
 	</xs:element>
 	<xs:element name="color">
 		<xs:annotation>
-			<xs:documentation>Free text description of color(s) of object. Typically applied to paper monetary instruments, tokens, or decorations. XLink
-				attributes may be applied to link to controlled vocabularies of color.</xs:documentation>
+			<xs:documentation>Free text description of color(s) of object. Typically applied to
+				paper monetary instruments, tokens, or decorations. XLink attributes may be applied
+				to link to controlled vocabularies of color.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -735,9 +800,11 @@
 
 	<xs:element name="countermark">
 		<xs:annotation>
-			<xs:documentation>A &lt;countermark&gt; is a physical characteristic, separated from typological description. It may optionally contain
-				&lt;obverse&gt; or &lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt; element, which may be included directly within
-				&lt;countermark&gt; when the side of the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
+			<xs:documentation>A &lt;countermark&gt; is a physical characteristic, separated from
+				typological description. It may optionally contain &lt;obverse&gt; or
+				&lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt; element, which may be
+				included directly within &lt;countermark&gt; when the side of the coin cannot be
+				ascertained, or within the obverse or reverse.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:choice>
@@ -756,9 +823,11 @@
 
 	<xs:element name="testmark">
 		<xs:annotation>
-			<xs:documentation>A &lt;testmark&gt; is a physical characteristic, separated from typological description. It may optionally contain &lt;obverse&gt;
-				or &lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt; element, which may be included directly within &lt;testmark&gt; when the side
-				of the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
+			<xs:documentation>A &lt;testmark&gt; is a physical characteristic, separated from
+				typological description. It may optionally contain &lt;obverse&gt; or
+				&lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt; element, which may be
+				included directly within &lt;testmark&gt; when the side of the coin cannot be
+				ascertained, or within the obverse or reverse.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:choice>
@@ -777,9 +846,11 @@
 
 	<xs:element name="watermark">
 		<xs:annotation>
-			<xs:documentation>A &lt;watermark&gt; is a physical characteristic (particularly on paper objects), separated from typological description. It may
-				optionally contain &lt;obverse&gt; or &lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt; element, which may be included directly
-				within &lt;watermark&gt; when the side of the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
+			<xs:documentation>A &lt;watermark&gt; is a physical characteristic (particularly on
+				paper objects), separated from typological description. It may optionally contain
+				&lt;obverse&gt; or &lt;reverse&gt; The mark must be encoded in the &lt;symbol&gt;
+				element, which may be included directly within &lt;watermark&gt; when the side of
+				the coin cannot be ascertained, or within the obverse or reverse.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice>
@@ -799,8 +870,10 @@
 	<!-- conservationState elements -->
 	<xs:element name="conservationState">
 		<xs:annotation>
-			<xs:documentation>The &lt;conservationState&gt; is a container element for the physical states of conservation of an object. The Conservation State
-				elements may appear directly within or it may include &lt;obverse&gt; and/or &lt;reverse&gt; for greater specificity.</xs:documentation>
+			<xs:documentation>The &lt;conservationState&gt; is a container element for the physical
+				states of conservation of an object. The Conservation State elements may appear
+				directly within or it may include &lt;obverse&gt; and/or &lt;reverse&gt; for greater
+				specificity.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -831,7 +904,8 @@
 
 	<xs:element name="condition">
 		<xs:annotation>
-			<xs:documentation>Condition. Recommended to link to a controlled list via XLink attributes.</xs:documentation>
+			<xs:documentation>Condition. Recommended to link to a controlled list via XLink
+				attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -842,8 +916,8 @@
 	</xs:element>
 	<xs:element name="wear">
 		<xs:annotation>
-			<xs:documentation>Level of wear. Recommended to link to a controlled list via XLink attributes. See instances of nmo:CoinWear on
-				Nomisma.org.</xs:documentation>
+			<xs:documentation>Level of wear. Recommended to link to a controlled list via XLink
+				attributes. See instances of nmo:CoinWear on Nomisma.org.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -854,7 +928,8 @@
 	</xs:element>
 	<xs:element name="completeness">
 		<xs:annotation>
-			<xs:documentation>Completeness. Recommended to link to a controlled list via XLink attributes.</xs:documentation>
+			<xs:documentation>Completeness. Recommended to link to a controlled list via XLink
+				attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -865,7 +940,8 @@
 	</xs:element>
 	<xs:element name="grade">
 		<xs:annotation>
-			<xs:documentation>Grade. Recommended to link to a controlled list via XLink attributes.</xs:documentation>
+			<xs:documentation>Grade. Recommended to link to a controlled list via XLink
+				attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -876,7 +952,8 @@
 
 	<xs:element name="secondaryTreatment">
 		<xs:annotation>
-			<xs:documentation>The &lt;secondaryTreatment&gt; are post-manufacture alterations to an object.</xs:documentation>
+			<xs:documentation>The &lt;secondaryTreatment&gt; are post-manufacture alterations to an
+				object.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -889,7 +966,8 @@
 
 	<xs:element name="dateOnObject">
 		<xs:annotation>
-			<xs:documentation>A literal transcription of the &lt;date&gt; or &lt;dateRange&gt; on an object. An &lt;era&gt; may be included.</xs:documentation>
+			<xs:documentation>A literal transcription of the &lt;date&gt; or &lt;dateRange&gt; on an
+				object. An &lt;era&gt; may be included.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -907,7 +985,8 @@
 
 	<xs:element name="era">
 		<xs:annotation>
-			<xs:documentation>The era by which a &lt;dateOnObject&gt; is attributed.</xs:documentation>
+			<xs:documentation>The era by which a &lt;dateOnObject&gt; is
+				attributed.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -920,7 +999,8 @@
 	<!-- measurements -->
 	<xs:element name="measurementsSet">
 		<xs:annotation>
-			<xs:documentation>The &lt;measurementsSet&gt; is a container for physical measurments of an object.</xs:documentation>
+			<xs:documentation>The &lt;measurementsSet&gt; is a container for physical measurments of
+				an object.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:all>
@@ -937,8 +1017,9 @@
 
 	<xs:element name="diameter">
 		<xs:annotation>
-			<xs:documentation>Diameter (in decimal numbers) of a round object. Units and precision may be included as attributes. The &lt;diameter&gt; should
-				not be used in conjunction with &lt;height&gt; and &lt;width&gt;.</xs:documentation>
+			<xs:documentation>Diameter (in decimal numbers) of a round object. Units and precision
+				may be included as attributes. The &lt;diameter&gt; should not be used in
+				conjunction with &lt;height&gt; and &lt;width&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -956,8 +1037,9 @@
 	</xs:element>
 	<xs:element name="height">
 		<xs:annotation>
-			<xs:documentation>The &lt;height&gt; should be used with &lt;width&gt; and not &lt;diameter&gt;. If viewing the obverse, the height is the y-axis
-				measurement in decimal numbers.</xs:documentation>
+			<xs:documentation>The &lt;height&gt; should be used with &lt;width&gt; and not
+				&lt;diameter&gt;. If viewing the obverse, the height is the y-axis measurement in
+				decimal numbers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -993,7 +1075,8 @@
 	</xs:element>
 	<xs:element name="specificGravity">
 		<xs:annotation>
-			<xs:documentation>Specific gravity that measures the density of known purities in a coin, encoded in decimal numbers.</xs:documentation>
+			<xs:documentation>Specific gravity that measures the density of known purities in a
+				coin, encoded in decimal numbers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -1011,7 +1094,8 @@
 	</xs:element>
 	<xs:element name="weight">
 		<xs:annotation>
-			<xs:documentation>Weight encoded in decimal numbers, usually by grams. The unit and precision may be included as attributes.</xs:documentation>
+			<xs:documentation>Weight encoded in decimal numbers, usually by grams. The unit and
+				precision may be included as attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -1029,8 +1113,9 @@
 	</xs:element>
 	<xs:element name="width">
 		<xs:annotation>
-			<xs:documentation>The &lt;width&gt; should be used with &lt;height&gt; and not &lt;diameter&gt;. If viewing the obverse, the width is the x-axis
-				measurement in decimal numbers.</xs:documentation>
+			<xs:documentation>The &lt;width&gt; should be used with &lt;height&gt; and not
+				&lt;diameter&gt;. If viewing the obverse, the width is the x-axis measurement in
+				decimal numbers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -1048,8 +1133,10 @@
 	</xs:element>
 	<xs:element name="length">
 		<xs:annotation>
-			<xs:documentation>The &lt;length&gt; should be used with one or two other &lt;length&gt; elements and not other measurement elements, when the
-				height, width, and thickness cannot be clearly ascertained. The measurement should be in decimal numbers.</xs:documentation>
+			<xs:documentation>The &lt;length&gt; should be used with one or two other &lt;length&gt;
+				elements and not other measurement elements, when the height, width, and thickness
+				cannot be clearly ascertained. The measurement should be in decimal
+				numbers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -1069,8 +1156,8 @@
 
 	<xs:element name="serialNumber">
 		<xs:annotation>
-			<xs:documentation>The serial number that appears on an object. The element is repeatable and most commonly applies to paper
-				objects.</xs:documentation>
+			<xs:documentation>The serial number that appears on an object. The element is repeatable
+				and most commonly applies to paper objects.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1081,7 +1168,8 @@
 
 	<xs:element name="shape">
 		<xs:annotation>
-			<xs:documentation>The &lt;shape&gt; of an object. Ideally, it should conform to a controlled vocabulary.</xs:documentation>
+			<xs:documentation>The &lt;shape&gt; of an object. Ideally, it should conform to a
+				controlled vocabulary.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1095,8 +1183,10 @@
 	<!-- ************* TYPEDESC ************** -->
 	<xs:element name="typeDesc">
 		<xs:annotation>
-			<xs:documentation>The Typological Description, &lt;typeDesc&gt;, is a container for typological characteristics of a resource, whether a physical
-				object or a coin type. The &lt;typeDesc&gt; is the only required top-level descriptive element within &lt;descMeta&gt;.</xs:documentation>
+			<xs:documentation>The Typological Description, &lt;typeDesc&gt;, is a container for
+				typological characteristics of a resource, whether a physical object or a coin type.
+				The &lt;typeDesc&gt; is the only required top-level descriptive element within
+				&lt;descMeta&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1122,7 +1212,7 @@
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="denomination"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="manufacture"/>
 			<xs:element minOccurs="0" maxOccurs="unbounded" ref="material"/>
-			<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>			
+			<xs:element minOccurs="0" maxOccurs="1" ref="shape"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="authority"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="geographic"/>
 			<xs:element minOccurs="0" maxOccurs="1" ref="obverse"/>
@@ -1135,8 +1225,9 @@
 
 	<xs:element name="objectType">
 		<xs:annotation>
-			<xs:documentation>The type of object, usually defined by a Nomisma or Getty AAT URI by means of XLink attributes. For conceptual record types, the
-				&lt;objectType&gt; will map to nmo:representsObjectType in the Nomisma RDF ontology.</xs:documentation>
+			<xs:documentation>The type of object, usually defined by a Nomisma or Getty AAT URI by
+				means of XLink attributes. For conceptual record types, the &lt;objectType&gt; will
+				map to nmo:representsObjectType in the Nomisma RDF ontology.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1146,7 +1237,8 @@
 
 	<xs:element name="denomination">
 		<xs:annotation>
-			<xs:documentation>The &lt;denomination&gt;, usually defined by a Nomisma URI by means of XLink attributes.</xs:documentation>
+			<xs:documentation>The &lt;denomination&gt;, usually defined by a Nomisma URI by means of
+				XLink attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1156,7 +1248,8 @@
 
 	<xs:element name="manufacture">
 		<xs:annotation>
-			<xs:documentation>The method of manufacture (e.g., struck), usually defined by a Nomisma URI by means of XLink attributes.</xs:documentation>
+			<xs:documentation>The method of manufacture (e.g., struck), usually defined by a Nomisma
+				URI by means of XLink attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1166,7 +1259,8 @@
 
 	<xs:element name="material">
 		<xs:annotation>
-			<xs:documentation>The &lt;material&gt; (e.g., silver), usually defined by a Nomisma URI by means of XLink attributes.</xs:documentation>
+			<xs:documentation>The &lt;material&gt; (e.g., silver), usually defined by a Nomisma URI
+				by means of XLink attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1177,9 +1271,11 @@
 	<!-- personal, family, corporate, and geographic names -->
 	<xs:element name="persname">
 		<xs:annotation>
-			<xs:documentation>A personal name associated with a record, typically under &lt;authority&gt; or, when depicted, under &lt;obverse&gt; or
-				&lt;reverse&gt;. It should link to a URI in Nomisma or another concept scheme. The role of this person should be expressed by @xlink:role. In
-				Numishare, typical roles are 'issuer', 'authority', 'portrait', and 'deity'.</xs:documentation>
+			<xs:documentation>A personal name associated with a record, typically under
+				&lt;authority&gt; or, when depicted, under &lt;obverse&gt; or &lt;reverse&gt;. It
+				should link to a URI in Nomisma or another concept scheme. The role of this person
+				should be expressed by @xlink:role. In Numishare, typical roles are 'issuer',
+				'authority', 'portrait', and 'deity'.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1188,9 +1284,11 @@
 	</xs:element>
 	<xs:element name="geogname">
 		<xs:annotation>
-			<xs:documentation>A geographic name associated with a record, under &lt;geographic&gt;. It should link to a URI in Nomisma or another concept
-				scheme. The role of this place should be expressed by @xlink:role. In Numishare, typical roles are 'mint' and 'region'. Typically, the region
-				can be derived from Nomisma itself.</xs:documentation>
+			<xs:documentation>A geographic name associated with a record, under &lt;geographic&gt;.
+				It should link to a URI in Nomisma or another concept scheme. The role of this place
+				should be expressed by @xlink:role. In Numishare, typical roles are 'mint' and
+				'region'. Typically, the region can be derived from Nomisma
+				itself.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1199,9 +1297,10 @@
 	</xs:element>
 	<xs:element name="corpname">
 		<xs:annotation>
-			<xs:documentation>A corporate name associated with a record, typically under &lt;authority&gt;. It should link to a URI in Nomisma or another
-				concept scheme. The role of this person should be expressed by @xlink:role. In Numishare, typical roles are 'issuer', 'authority', and
-				'state'.</xs:documentation>
+			<xs:documentation>A corporate name associated with a record, typically under
+				&lt;authority&gt;. It should link to a URI in Nomisma or another concept scheme. The
+				role of this person should be expressed by @xlink:role. In Numishare, typical roles
+				are 'issuer', 'authority', and 'state'.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1210,8 +1309,9 @@
 	</xs:element>
 	<xs:element name="famname">
 		<xs:annotation>
-			<xs:documentation>A family (dynasty) name associated with a record, typically under &lt;authority&gt;. It should link to a URI in Nomisma or another
-				concept scheme.</xs:documentation>
+			<xs:documentation>A family (dynasty) name associated with a record, typically under
+				&lt;authority&gt;. It should link to a URI in Nomisma or another concept
+				scheme.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attributeGroup ref="m.default"/>
@@ -1221,7 +1321,8 @@
 
 	<xs:element name="authority">
 		<xs:annotation>
-			<xs:documentation>A container element for entities related to authorizing or issuing the object or type.</xs:documentation>
+			<xs:documentation>A container element for entities related to authorizing or issuing the
+				object or type.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -1229,13 +1330,14 @@
 				<xs:element ref="corpname"/>
 				<xs:element ref="famname"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="authenticity"/>
-			</xs:choice>	
+			</xs:choice>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="geographic">
 		<xs:annotation>
-			<xs:documentation>A container element for places related to minting coinage.</xs:documentation>
+			<xs:documentation>A container element for places related to minting
+				coinage.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1246,8 +1348,8 @@
 
 	<xs:element name="edge">
 		<xs:annotation>
-			<xs:documentation>A container element for metadata about the edge, including textual &lt;description&gt;, &lt;type&gt;, and
-				&lt;legend&gt;.</xs:documentation>
+			<xs:documentation>A container element for metadata about the edge, including textual
+				&lt;description&gt;, &lt;type&gt;, and &lt;legend&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="false">
 			<xs:choice minOccurs="1">
@@ -1284,8 +1386,9 @@
 
 	<xs:element name="type">
 		<xs:annotation>
-			<xs:documentation>The &lt;type&gt; element may occur in &lt;edge&gt;, &lt;obverse&gt;, and &lt;reverse&gt;. It must include at least one
-				&lt;description&gt; element, which should include the language of the type description.</xs:documentation>
+			<xs:documentation>The &lt;type&gt; element may occur in &lt;edge&gt;, &lt;obverse&gt;,
+				and &lt;reverse&gt;. It must include at least one &lt;description&gt; element, which
+				should include the language of the type description.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1296,9 +1399,11 @@
 
 	<xs:element name="legend">
 		<xs:annotation>
-			<xs:documentation>The &lt;legend&gt; is a mixed content element. Typically, the legend will be a literal transcription, and the @scriptCode
-				attribute may be used to designate the script. Alternatively, one or more &lt;tei:div&gt; elements may be namespaced in for a greater degree of
-				transcriptive accuracy, following the EpiDoc schema.</xs:documentation>
+			<xs:documentation>The &lt;legend&gt; is a mixed content element. Typically, the legend
+				will be a literal transcription, and the @scriptCode attribute may be used to
+				designate the script. Alternatively, one or more &lt;tei:div&gt; elements may be
+				namespaced in for a greater degree of transcriptive accuracy, following the EpiDoc
+				schema.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -1313,8 +1418,10 @@
 
 	<xs:element name="typeSeries">
 		<xs:annotation>
-			<xs:documentation>The &lt;typeSeries&gt; should implement XLink attributes to link to a Nomisma-defined Type Series. Presently, the Type Series is
-				stored in the configuration for Numishare, not explicitly within each NUDS record for coin type projects such as OCRE.</xs:documentation>
+			<xs:documentation>The &lt;typeSeries&gt; should implement XLink attributes to link to a
+				Nomisma-defined Type Series. Presently, the Type Series is stored in the
+				configuration for Numishare, not explicitly within each NUDS record for coin type
+				projects such as OCRE.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1326,10 +1433,13 @@
 
 	<xs:element name="symbol">
 		<xs:annotation>
-			<xs:documentation>A symbolic character, pictograph, or monogram appearing on a coin. The symbol type can be defined by @localType attributes on a
-				project-by-project basis. Use XLink attributes to link to URIs that define symbols in thesaurus systems. The semantic attribute can be used to
-				enforce stronger semantic meaning by means of RDF properties from the Nomisma ontology (e.g., nmo:hasControlmark). The @position attribute may
-				be used for arbitrary definitions of position on the coin. For additional complexity (uncertainty, positioning of characters within the symbol,
+			<xs:documentation>A symbolic character, pictograph, or monogram appearing on a coin. The
+				symbol type can be defined by @localType attributes on a project-by-project basis.
+				Use XLink attributes to link to URIs that define symbols in thesaurus systems. The
+				semantic attribute can be used to enforce stronger semantic meaning by means of RDF
+				properties from the Nomisma ontology (e.g., nmo:hasControlmark). The @position
+				attribute may be used for arbitrary definitions of position on the coin. For
+				additional complexity (uncertainty, positioning of characters within the symbol,
 				etc.), EpiDoc TEI can be namespaced in a tei:div.</xs:documentation>
 		</xs:annotation>
 
@@ -1341,8 +1451,8 @@
 			<xs:attribute ref="xml:lang"/>
 			<xs:attribute name="position">
 				<xs:annotation>
-					<xs:documentation>Position of a symbol on a coin. Positions may follow standard terminology as tokens or URIs, e.g.,
-						"exergue".</xs:documentation>
+					<xs:documentation>Position of a symbol on a coin. Positions may follow standard
+						terminology as tokens or URIs, e.g., "exergue".</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:anyURI"/>
@@ -1356,8 +1466,8 @@
 
 	<xs:element name="die">
 		<xs:annotation>
-			<xs:documentation>The indentifier for a die relating to obverse or reverse type. Use XLink attributes to link to dies defined in thesaurus
-				systems.</xs:documentation>
+			<xs:documentation>The indentifier for a die relating to obverse or reverse type. Use
+				XLink attributes to link to dies defined in thesaurus systems.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute name="state" use="required">
@@ -1376,8 +1486,9 @@
 
 	<xs:element name="weightStandard">
 		<xs:annotation>
-			<xs:documentation>The &lt;weightStandard&gt; of the coin, which applies particularly to Greek coinage. XLink attributes should be used to link to
-				weight standards defined by Nomisma.org.</xs:documentation>
+			<xs:documentation>The &lt;weightStandard&gt; of the coin, which applies particularly to
+				Greek coinage. XLink attributes should be used to link to weight standards defined
+				by Nomisma.org.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1390,8 +1501,9 @@
 
 	<xs:element name="undertypeDesc">
 		<xs:annotation>
-			<xs:documentation>Identical to the &lt;typeDesc&gt; in what it containers. The Undertype Description captures typological information about the
-				undertype. This element should not be used in conceptual records.</xs:documentation>
+			<xs:documentation>Identical to the &lt;typeDesc&gt; in what it containers. The Undertype
+				Description captures typological information about the undertype. This element
+				should not be used in conceptual records.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1409,9 +1521,11 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:annotation>
-					<xs:documentation>Findspot Description. The findspotDesc may contain anything in the NUDS-Hoard hoardDesc: typically a findspot/geogname.
-						This element may use XLink attributes to point directly to a record with more information about the findspot, e.g., a URI defining a
-						coin hoard. This element should not be used in conceptual records.</xs:documentation>
+					<xs:documentation>Findspot Description. The findspotDesc may contain anything in
+						the NUDS-Hoard hoardDesc: typically a findspot/geogname. This element may
+						use XLink attributes to point directly to a record with more information
+						about the findspot, e.g., a URI defining a coin hoard. This element should
+						not be used in conceptual records.</xs:documentation>
 				</xs:annotation>
 				<xs:element minOccurs="0" ref="findspot"/>
 				<xs:element minOccurs="0" ref="deposit"/>
@@ -1425,15 +1539,19 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- findspot and child elements -->
 	<xs:element name="findspot">
 		<xs:annotation>
-			<xs:documentation>The &lt;findspot&gt; element may contain a &lt;geogname&gt; that links to a gazetteer such as Geonames.org and descriptive text in
+			<xs:documentation>The &lt;findspot&gt; element may contain a &lt;geogname&gt; that links
+				to a gazetteer such as Geonames.org and descriptive text in
 				&lt;description&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:all>
-				<xs:element minOccurs="0" maxOccurs="1" ref="description"/>
-				<xs:element minOccurs="0" maxOccurs="1" ref="geogname"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="geogname"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="fallsWithin"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="spatialContext"/>
 			</xs:all>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
@@ -1441,17 +1559,49 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="fallsWithin">
+		<xs:annotation>
+			<xs:documentation>A findspot typically falls within a broader geographic entity. Links
+				to gazetteer URIs should be included here.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:all>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="geogname"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="spatialContext"/>
+			</xs:all>
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="spatialContext">
+		<xs:annotation>
+			<xs:documentation>Defines the geographic feature type or usage.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- deposit and child elements -->
 	<xs:element name="deposit">
 		<xs:annotation>
-			<xs:documentation>Includes the &lt;date&gt; or &lt;dateRange&gt; of the deposit of the coin. This should be expanded to include further
-				context.</xs:documentation>
+			<xs:documentation>Includes the &lt;date&gt; or &lt;dateRange&gt; of the deposit of the
+				coin. This should be expanded to include further context.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
 				<xs:choice>
 					<xs:element ref="date"/>
 					<xs:element ref="dateRange"/>
 				</xs:choice>
+				<xs:element minOccurs="0" maxOccurs="1" ref="motivation"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="period"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="spatialContext"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
@@ -1459,42 +1609,97 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="motivation">
+		<xs:annotation>
+			<xs:documentation>Defines a hypothetical motivation for the deposit, e.g., 'accidental',
+				'votive', etc. The @resp attribute should be used to point to an identifier for the
+				scholar responsible for the attestation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="period">
+		<xs:annotation>
+			<xs:documentation>The &lt;period&gt; is a named temporal entity, separate from concrete
+				start and end dates defined by a calendar system. It is recommended to follow a
+				controlled vocabulary.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- discovery and child elements -->
 	<xs:element name="discovery">
 		<xs:annotation>
-			<xs:documentation>Includes the &lt;date&gt; or &lt;dateRange&gt; of the discovery of the coin. This should be expanded to include further
-				context.</xs:documentation>
+			<xs:documentation>Includes the &lt;date&gt; or &lt;dateRange&gt; of the discovery of the
+				coin. This should be expanded to include further context.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
 				<xs:choice>
 					<xs:element ref="date"/>
 					<xs:element ref="dateRange"/>
 				</xs:choice>
+				<xs:element minOccurs="0" maxOccurs="1" ref="method"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="project"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="project">
+		<xs:annotation>
+			<xs:documentation>Defines metadata about the excavation project.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="title"/>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="persname"/>
+					<xs:element ref="corpname"/>
+				</xs:choice>
+			</xs:sequence>			
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="disposition">
 		<xs:annotation>
-			<xs:documentation>A free text description detailing the disposition of the object once discovered. More detailed provenance is captured in the
+			<xs:documentation>A free text description detailing the disposition of the object once
+				discovered. More detailed provenance is captured in the
 				&lt;adminDesc&gt;.</xs:documentation>
 		</xs:annotation>
-		<xs:complexType mixed="true">
+		<xs:complexType>
+			<xs:all>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
+			</xs:all>
 			<xs:attribute ref="xml:id"/>
 			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
 
+
+
 	<!-- ************* END FINDSPOT ************** -->
 	<!-- ************* REFERENCES ************** -->
 	<xs:element name="refDesc">
 		<xs:annotation>
-			<xs:documentation>The Reference Description contains references about the coin or type. These references may be differentiated by XLink attributes,
-				@localType, or @semantic properties.</xs:documentation>
+			<xs:documentation>The Reference Description contains references about the coin or type.
+				These references may be differentiated by XLink attributes, @localType, or @semantic
+				properties.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1502,7 +1707,7 @@
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="citation"/>
 			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
-			<xs:attribute ref="xml:lang"/>			
+			<xs:attribute ref="xml:lang"/>
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
 		</xs:complexType>
@@ -1511,8 +1716,9 @@
 	<!-- ********** ADMINDESC ********** -->
 	<xs:element name="adminDesc">
 		<xs:annotation>
-			<xs:documentation>The Administrative Description contains information pertaining to provenance, accessioning, deaccessioning, and other
-				administrative metadata. This element should not be used in conceptual records.</xs:documentation>
+			<xs:documentation>The Administrative Description contains information pertaining to
+				provenance, accessioning, deaccessioning, and other administrative metadata. This
+				element should not be used in conceptual records.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1534,9 +1740,11 @@
 
 	<xs:element name="identifier">
 		<xs:annotation>
-			<xs:documentation>The &lt;identifier&gt; is the holding repository's internal identification number--typically an accession number. If the
-				&lt;identifier&gt; may be expressed in a way that is valid for a URI, it is recommended that this number be simultaneously used as the
-				&lt;recordId&gt; in the &lt;control&gt; of the NUDS record.</xs:documentation>
+			<xs:documentation>The &lt;identifier&gt; is the holding repository's internal
+				identification number--typically an accession number. If the &lt;identifier&gt; may
+				be expressed in a way that is valid for a URI, it is recommended that this number be
+				simultaneously used as the &lt;recordId&gt; in the &lt;control&gt; of the NUDS
+				record.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1547,8 +1755,10 @@
 
 	<xs:element name="department">
 		<xs:annotation>
-			<xs:documentation>The administrative department to which an object belongs, e.g., "Greek" or "Islamic." Departments can vary widely by institution.
-				XLink attributes may be used to link to Fields of Numismatics as defined by Nomisma.org.</xs:documentation>
+			<xs:documentation>The administrative department to which an object belongs, e.g.,
+				"Greek" or "Islamic." Departments can vary widely by institution. XLink attributes
+				may be used to link to Fields of Numismatics as defined by
+				Nomisma.org.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1560,11 +1770,14 @@
 
 	<xs:element name="collection">
 		<xs:annotation>
-			<xs:documentation>The collection to which an object belongs--where the object is physically located. It should link to a standard URI via XLink
-				attributes. The &lt;collection&gt; may be the same as the &lt;maintenanceAgency&gt; in the NUDS &lt;control&gt;, although it might be different
-				if one institution is reponsible for the maintenance of the digital information for another institution that physically houses the object. For
-				example, the University of Virginia Library is the &lt;maintenanceAgency&gt; for coins that physically reside in the Fralin Museum at the
-				University of Virginia.</xs:documentation>
+			<xs:documentation>The collection to which an object belongs--where the object is
+				physically located. It should link to a standard URI via XLink attributes. The
+				&lt;collection&gt; may be the same as the &lt;maintenanceAgency&gt; in the NUDS
+				&lt;control&gt;, although it might be different if one institution is reponsible for
+				the maintenance of the digital information for another institution that physically
+				houses the object. For example, the University of Virginia Library is the
+				&lt;maintenanceAgency&gt; for coins that physically reside in the Fralin Museum at
+				the University of Virginia.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1576,8 +1789,9 @@
 
 	<xs:element name="repository">
 		<xs:annotation>
-			<xs:documentation>A holding institution that may be different from the collection, e.g., when the collection of the Hispanic Society resided within
-				the American Numismatic Society.</xs:documentation>
+			<xs:documentation>A holding institution that may be different from the collection, e.g.,
+				when the collection of the Hispanic Society resided within the American Numismatic
+				Society.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1589,8 +1803,9 @@
 
 	<xs:element name="physloc">
 		<xs:annotation>
-			<xs:documentation>Additional physical location information for an object. This should be used if an object is stored in an offsite storage facility
-				or vault that is at a different location that the address of the collection itself.</xs:documentation>
+			<xs:documentation>Additional physical location information for an object. This should be
+				used if an object is stored in an offsite storage facility or vault that is at a
+				different location that the address of the collection itself.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1614,7 +1829,8 @@
 
 	<xs:element name="acknowledgment">
 		<xs:annotation>
-			<xs:documentation>Any arbitrary &lt;acknowledgment&gt;, such as a donor who provided funds for digitization.</xs:documentation>
+			<xs:documentation>Any arbitrary &lt;acknowledgment&gt;, such as a donor who provided
+				funds for digitization.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1626,7 +1842,8 @@
 
 	<xs:element name="display">
 		<xs:annotation>
-			<xs:documentation>Captures information about the current display of the object. A &lt;label&gt; may optionally be included.</xs:documentation>
+			<xs:documentation>Captures information about the current display of the object. A
+				&lt;label&gt; may optionally be included.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1641,7 +1858,8 @@
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attribute name="onDisplay" use="required">
 				<xs:annotation>
-					<xs:documentation>A restricted list of 'true' or 'false' indicating whether the object is currently on display.</xs:documentation>
+					<xs:documentation>A restricted list of 'true' or 'false' indicating whether the
+						object is currently on display.</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -1655,7 +1873,8 @@
 
 	<xs:element name="institution">
 		<xs:annotation>
-			<xs:documentation>The institution that is currently displaying an object (if different than the home collection).</xs:documentation>
+			<xs:documentation>The institution that is currently displaying an object (if different
+				than the home collection).</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1667,7 +1886,8 @@
 
 	<xs:element name="location">
 		<xs:annotation>
-			<xs:documentation>The physical location where the object is put on display, e.g., a room or gallery.</xs:documentation>
+			<xs:documentation>The physical location where the object is put on display, e.g., a room
+				or gallery.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1690,8 +1910,9 @@
 
 	<xs:element name="appraisal">
 		<xs:annotation>
-			<xs:documentation>The &lt;appraisal&gt; of the object, which must include &lt;date&gt; and &lt;appraiser&gt;, as well as a choice between a textual
-				&lt;description&gt; and a numeric &lt;value&gt;.</xs:documentation>
+			<xs:documentation>The &lt;appraisal&gt; of the object, which must include &lt;date&gt;
+				and &lt;appraiser&gt;, as well as a choice between a textual &lt;description&gt; and
+				a numeric &lt;value&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1710,7 +1931,8 @@
 
 	<xs:element name="appraiser">
 		<xs:annotation>
-			<xs:documentation>The individual or organization responsible for issuing an appraisal.</xs:documentation>
+			<xs:documentation>The individual or organization responsible for issuing an
+				appraisal.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1721,7 +1943,8 @@
 
 	<xs:element name="value">
 		<xs:annotation>
-			<xs:documentation>The monetary value of an appraisal, in a decimal number. The @currency attribute is required.</xs:documentation>
+			<xs:documentation>The monetary value of an appraisal, in a decimal number. The @currency
+				attribute is required.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:simpleContent>
@@ -1740,8 +1963,9 @@
 	<!-- previous collections -->
 	<xs:element name="provenance">
 		<xs:annotation>
-			<xs:documentation>Provenance: a container element for either a textual &lt;description&gt; of provenance or a &lt;chronList&gt; listing the dates
-				and previous owners of the object.</xs:documentation>
+			<xs:documentation>Provenance: a container element for either a textual
+				&lt;description&gt; of provenance or a &lt;chronList&gt; listing the dates and
+				previous owners of the object.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1758,7 +1982,8 @@
 
 	<xs:element name="chronList">
 		<xs:annotation>
-			<xs:documentation>Chronological List of ownership events. Includes 1 or more &lt;chronItem&gt; elements.</xs:documentation>
+			<xs:documentation>Chronological List of ownership events. Includes 1 or more
+				&lt;chronItem&gt; elements.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1772,8 +1997,9 @@
 
 	<xs:element name="chronItem">
 		<xs:annotation>
-			<xs:documentation>Chronological Item: an individual ownership event within a chain of an object's provenance. The date is optional (since the date
-				is not always adequately preserved in the electronic records) but highly recommended.</xs:documentation>
+			<xs:documentation>Chronological Item: an individual ownership event within a chain of an
+				object's provenance. The date is optional (since the date is not always adequately
+				preserved in the electronic records) but highly recommended.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1795,8 +2021,9 @@
 
 	<xs:element name="acquiredFrom">
 		<xs:annotation>
-			<xs:documentation>Person or organization where the object was acquired. The associated date should reflect the acquisition date, as precisely as
-				possible. XLink attributes may be used to link to stable identifiers.</xs:documentation>
+			<xs:documentation>Person or organization where the object was acquired. The associated
+				date should reflect the acquisition date, as precisely as possible. XLink attributes
+				may be used to link to stable identifiers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:sequence minOccurs="0">
@@ -1816,8 +2043,9 @@
 
 	<xs:element name="previousColl">
 		<xs:annotation>
-			<xs:documentation>Person or organization that had previously owned the material. The associated date should reflect the dates of ownership or
-				maintenance. XLink attributes may be used to link to stable identifiers.</xs:documentation>
+			<xs:documentation>Person or organization that had previously owned the material. The
+				associated date should reflect the dates of ownership or maintenance. XLink
+				attributes may be used to link to stable identifiers.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence minOccurs="0">
@@ -1846,8 +2074,7 @@
 
 	<xs:element name="method">
 		<xs:annotation>
-			<xs:documentation>Method of acquisition, e.g., 'donation', 'auction'. Ideally, the method should be confined to a restricted list of
-				terms.</xs:documentation>
+			<xs:documentation>A method corresponding to an action, such as a method of sale or method of finding/discovery.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1859,7 +2086,8 @@
 	<!-- sale/lot -->
 	<xs:element name="saleCatalog">
 		<xs:annotation>
-			<xs:documentation>The auction catalog. XLink attributes should be used to point to a bibliographic entry.</xs:documentation>
+			<xs:documentation>The auction catalog. XLink attributes should be used to point to a
+				bibliographic entry.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -1896,8 +2124,10 @@
 	<!-- ********** COMMONLY REPEATED ELEMENTS ********** -->
 	<xs:element name="description">
 		<xs:annotation>
-			<xs:documentation>A generic element intended to contain a textual description. It may contain just free-text or an unbounded number of &lt;ab&gt;
-				(anonymous block) elements to facilitate greater flexibility in prose encoding with TEI paragraph content namespaced in.</xs:documentation>
+			<xs:documentation>A generic element intended to contain a textual description. It may
+				contain just free-text or an unbounded number of &lt;ab&gt; (anonymous block)
+				elements to facilitate greater flexibility in prose encoding with TEI paragraph
+				content namespaced in.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:sequence>
@@ -1911,8 +2141,9 @@
 
 	<xs:element name="ab">
 		<xs:annotation>
-			<xs:documentation>The anonymous block element is reproduced from TEI and may contain TEI paragraph content namespaced in for greater flexibility in
-				the encoding of prose.</xs:documentation>
+			<xs:documentation>The anonymous block element is reproduced from TEI and may contain TEI
+				paragraph content namespaced in for greater flexibility in the encoding of
+				prose.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:complexContent mixed="true">
@@ -1927,8 +2158,10 @@
 
 	<xs:element name="obverse">
 		<xs:annotation>
-			<xs:documentation>The &lt;obverse&gt; appears primarily in &lt;typeDesc&gt; for encoding typological attributes about the obverse of a coin, but it
-				can also be used to describe physical conservation characteristics of an object within &lt;physDesc&gt;.</xs:documentation>
+			<xs:documentation>The &lt;obverse&gt; appears primarily in &lt;typeDesc&gt; for encoding
+				typological attributes about the obverse of a coin, but it can also be used to
+				describe physical conservation characteristics of an object within
+				&lt;physDesc&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1947,8 +2180,10 @@
 
 	<xs:element name="reverse">
 		<xs:annotation>
-			<xs:documentation>The &lt;reverse&gt; appears primarily in &lt;typeDesc&gt; for encoding typological attributes about the reverse of a coin, but it
-				can also be used to describe physical conservation characteristics of an object within &lt;physDesc&gt;.</xs:documentation>
+			<xs:documentation>The &lt;reverse&gt; appears primarily in &lt;typeDesc&gt; for encoding
+				typological attributes about the reverse of a coin, but it can also be used to
+				describe physical conservation characteristics of an object within
+				&lt;physDesc&gt;.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -1967,9 +2202,10 @@
 
 	<xs:element name="reference">
 		<xs:annotation>
-			<xs:documentation>A bibliographic reference (by which a coin is identified in a type corpus) contains a loosely-structured bibliographic or
-				electronic citation of which the sub-components may or may not be explicitly tagged. Xlink and semantic attributes are available to link to HTTP
-				resources.</xs:documentation>
+			<xs:documentation>A bibliographic reference (by which a coin is identified in a type
+				corpus) contains a loosely-structured bibliographic or electronic citation of which
+				the sub-components may or may not be explicitly tagged. Xlink and semantic
+				attributes are available to link to HTTP resources.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -2007,9 +2243,11 @@
 
 	<xs:element name="citation">
 		<xs:annotation>
-			<xs:documentation>A bibliographic citation (explicit reference of the physical object detailed in the NUDS record) contains a loosely-structured
-				bibliographic or electronic citation of which the sub-components may or may not be explicitly tagged. Xlink and semantic attributes are
-				available to link to HTTP resources.</xs:documentation>
+			<xs:documentation>A bibliographic citation (explicit reference of the physical object
+				detailed in the NUDS record) contains a loosely-structured bibliographic or
+				electronic citation of which the sub-components may or may not be explicitly tagged.
+				Xlink and semantic attributes are available to link to HTTP
+				resources.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -2033,8 +2271,10 @@
 
 	<xs:element name="digRep">
 		<xs:annotation>
-			<xs:documentation>The Digital Representations element should only be applied for physical objects. The contents of this element are not validated.
-				Typically, &lt;digRep&gt; includes METS elements namespaced in for encoding obverse and reverse images in various sizes.</xs:documentation>
+			<xs:documentation>The Digital Representations element should only be applied for
+				physical objects. The contents of this element are not validated. Typically,
+				&lt;digRep&gt; includes METS elements namespaced in for encoding obverse and reverse
+				images in various sizes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -2095,8 +2335,8 @@
 	<!-- dates -->
 	<xs:element name="date">
 		<xs:annotation>
-			<xs:documentation>A single date. It should include the @standardDate attribute to encode normalized dates according to xs
-				datatypes.</xs:documentation>
+			<xs:documentation>A single date. It should include the @standardDate attribute to encode
+				normalized dates according to xs datatypes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -2110,12 +2350,14 @@
 	<xs:attributeGroup name="m.dateSingle">
 		<xs:attribute name="standardDate" type="m.data.standardDate">
 			<xs:annotation>
-				<xs:documentation>The date represented in a standard form for computer processing.</xs:documentation>
+				<xs:documentation>The date represented in a standard form for computer
+					processing.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="notBefore" type="m.data.standardDate">
 			<xs:annotation>
-				<xs:documentation>The earliest date possible for an uncertain date.</xs:documentation>
+				<xs:documentation>The earliest date possible for an uncertain
+					date.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="notAfter" type="m.data.standardDate">
@@ -2127,7 +2369,8 @@
 
 	<xs:element name="dateRange">
 		<xs:annotation>
-			<xs:documentation>A date range that must include a beginning and end date.</xs:documentation>
+			<xs:documentation>A date range that must include a beginning and end
+				date.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -2143,8 +2386,8 @@
 
 	<xs:element name="fromDate">
 		<xs:annotation>
-			<xs:documentation>Beginning date of a range. It should include the @standardDate attribute to encode normalized dates according to xs
-				datatypes.</xs:documentation>
+			<xs:documentation>Beginning date of a range. It should include the @standardDate
+				attribute to encode normalized dates according to xs datatypes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -2156,8 +2399,8 @@
 
 	<xs:element name="toDate">
 		<xs:annotation>
-			<xs:documentation>End date of a range. It should include the @standardDate attribute to encode normalized dates according to xs
-				datatypes.</xs:documentation>
+			<xs:documentation>End date of a range. It should include the @standardDate attribute to
+				encode normalized dates according to xs datatypes.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
@@ -2169,7 +2412,8 @@
 
 	<xs:element name="dateSet">
 		<xs:annotation>
-			<xs:documentation>A date set includes an unbounded number of &lt;date&gt; or &lt;dateRange&gt; combinations.</xs:documentation>
+			<xs:documentation>A date set includes an unbounded number of &lt;date&gt; or
+				&lt;dateRange&gt; combinations.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -2201,7 +2445,8 @@
 	<!-- ********** ATTRIBUTES/DATA TYPES ********** -->
 	<xs:attribute name="currency">
 		<xs:annotation>
-			<xs:documentation>A simple token for designating the currency of a &lt;salePrice&gt; or &lt;value&gt; of appraisal, e. g., 'usd'.</xs:documentation>
+			<xs:documentation>A simple token for designating the currency of a &lt;salePrice&gt; or
+				&lt;value&gt; of appraisal, e. g., 'usd'.</xs:documentation>
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:token"/>
@@ -2210,8 +2455,9 @@
 
 	<xs:attribute name="percentage">
 		<xs:annotation>
-			<xs:documentation>The percentage of a &lt;component&gt; in a chemical analysis. It should be a decimal number with a maximum value of 100 (i. e.,
-				100 = 100%).</xs:documentation>
+			<xs:documentation>The percentage of a &lt;component&gt; in a chemical analysis. It
+				should be a decimal number with a maximum value of 100 (i. e., 100 =
+				100%).</xs:documentation>
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:decimal">
@@ -2222,7 +2468,8 @@
 
 	<xs:attribute name="clock">
 		<xs:annotation>
-			<xs:documentation>Clock designation for &lt;axis&gt; or &lt;channelOrientation&gt;</xs:documentation>
+			<xs:documentation>Clock designation for &lt;axis&gt; or
+				&lt;channelOrientation&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:string"/>
@@ -2241,6 +2488,7 @@
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
+					<xs:enumeration value="circa"/>
 					<xs:enumeration value="low"/>
 					<xs:enumeration value="medium"/>
 					<xs:enumeration value="high"/>
@@ -2252,7 +2500,8 @@
 	<xs:attributeGroup name="nuds_a.dimensions.attribute.unit">
 		<xs:attribute name="units">
 			<xs:annotation>
-				<xs:documentation>Names the unit used for the measurement. Suggested values include: 1] g; 2] cm; 3] mm</xs:documentation>
+				<xs:documentation>Names the unit used for the measurement. Suggested values include:
+					1] g; 2] cm; 3] mm</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:union>
@@ -2285,7 +2534,8 @@
 		<xs:attributeGroup ref="nuds_a.localType"/>
 		<xs:attribute name="resp">
 			<xs:annotation>
-				<xs:documentation>Responsible party: indicates the agency responsible for the intervention or interpretation, for example an editor or
+				<xs:documentation>Responsible party: indicates the agency responsible for the
+					intervention or interpretation, for example an editor or
 					transcriber.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
@@ -2299,8 +2549,9 @@
 		</xs:attribute>
 		<xs:attribute name="certainty">
 			<xs:annotation>
-				<xs:documentation>Designates the level of certainty regarding a statement. Recommended values are tokens or URIs connected to uncertainty types
-					defined by Nomisma.org.</xs:documentation>
+				<xs:documentation>Designates the level of certainty regarding a statement.
+					Recommended values are tokens or URIs connected to uncertainty types defined by
+					Nomisma.org.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction>
@@ -2313,10 +2564,13 @@
 		</xs:attribute>
 		<xs:attribute name="semantic">
 			<xs:annotation>
-				<xs:documentation>An RDF property (e.g., nuds:otherRecordId[@semantic='dcterms:isReplacedBy']) to lend greater semantic meaning or
-					differentiation. The prefix of this property should be defined by semanticDeclaration, in the NUDS control. Note that @semantic can be
-					applied to many elements in the NUDS schema that do not allow XLink attributes. The @xlink:arcrole can be used to the same effect as
-					@semantic, and is encouraged when XLink attributes are available. (e. g.,
+				<xs:documentation>An RDF property (e.g.,
+					nuds:otherRecordId[@semantic='dcterms:isReplacedBy']) to lend greater semantic
+					meaning or differentiation. The prefix of this property should be defined by
+					semanticDeclaration, in the NUDS control. Note that @semantic can be applied to
+					many elements in the NUDS schema that do not allow XLink attributes. The
+					@xlink:arcrole can be used to the same effect as @semantic, and is encouraged
+					when XLink attributes are available. (e. g.,
 					nuds:reference[@xlink:arcrole="nmo:hasTypeSeriesItem"]).</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
@@ -2333,7 +2587,8 @@
 	<xs:attributeGroup name="nuds_a.scriptCode">
 		<xs:attribute name="scriptCode">
 			<xs:annotation>
-				<xs:documentation>The ISO 15924 four-letter code for the writing script used. (e.g., Latn = Latin).</xs:documentation>
+				<xs:documentation>The ISO 15924 four-letter code for the writing script used. (e.g.,
+					Latn = Latin).</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
@@ -2345,8 +2600,8 @@
 
 	<xs:simpleType name="m.data.standardRepository">
 		<xs:annotation>
-			<xs:documentation>Repository code which could conform to the MARC Code List for Organizations standard
-				(http://www.loc.gov/marc/organizations/).</xs:documentation>
+			<xs:documentation>Repository code which could conform to the MARC Code List for
+				Organizations standard (http://www.loc.gov/marc/organizations/).</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:token">
 			<xs:pattern value="(([A-Z]{2})|([a-zA-Z]{1})|([a-zA-Z]{3,4}))(-[a-zA-Z0-9:/\-]{1,11})"/>
@@ -2356,7 +2611,8 @@
 	<xs:attributeGroup name="nuds_a.localType">
 		<xs:attribute name="localType" type="xs:anyURI">
 			<xs:annotation>
-				<xs:documentation>Generic type attribute used to differentiate the meaning of the same element within a NUDS document.</xs:documentation>
+				<xs:documentation>Generic type attribute used to differentiate the meaning of the
+					same element within a NUDS document.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:attributeGroup>
