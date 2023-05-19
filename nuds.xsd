@@ -33,12 +33,15 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
 	targetNamespace="http://nomisma.org/nuds" xmlns="http://nomisma.org/nuds"
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tei="http://www.tei-c.org/ns/1.0"
-	xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1" version="2017a">
+	xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+	vc:minVersion="1.1" version="2017a">
 	<!-- import default xml and xlink schemas -->
 	<xs:import namespace="http://www.w3.org/1999/xlink"
 		schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd" id="xlink"/>
 	<xs:import namespace="http://www.w3.org/XML/1998/namespace"
 		schemaLocation="http://www.w3.org/2007/08/xml.xsd" id="xml"/>
+	<xs:import namespace="http://www.opengis.net/gml/3.2"
+		schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd" id="gml"/>
 
 	<!--import EpiDoc -->
 	<!--<xs:import namespace="http://www.tei-c.org/ns/1.0"
@@ -1550,6 +1553,7 @@
 			<xs:all>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="description"/>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="geogname"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="gml:location"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="fallsWithin"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="spatialContext"/>
 			</xs:all>
@@ -1567,6 +1571,7 @@
 		<xs:complexType mixed="true">
 			<xs:all>
 				<xs:element minOccurs="0" maxOccurs="unbounded" ref="geogname"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="gml:location"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="spatialContext"/>
 			</xs:all>
 			<xs:attribute ref="xml:id"/>
@@ -1656,7 +1661,7 @@
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
-	
+
 	<xs:element name="project">
 		<xs:annotation>
 			<xs:documentation>Defines metadata about the excavation project.</xs:documentation>
@@ -1668,7 +1673,7 @@
 					<xs:element ref="persname"/>
 					<xs:element ref="corpname"/>
 				</xs:choice>
-			</xs:sequence>			
+			</xs:sequence>
 			<xs:attribute ref="xml:id"/>
 			<xs:attributeGroup ref="m.default"/>
 			<xs:attributeGroup ref="xlink:simpleLink"/>
@@ -2074,7 +2079,8 @@
 
 	<xs:element name="method">
 		<xs:annotation>
-			<xs:documentation>A method corresponding to an action, such as a method of sale or method of finding/discovery.</xs:documentation>
+			<xs:documentation>A method corresponding to an action, such as a method of sale or
+				method of finding/discovery.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
