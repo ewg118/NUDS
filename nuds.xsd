@@ -886,10 +886,32 @@
 						<xs:group ref="m.conservationStates"/>
 					</xs:choice>
 					<xs:sequence>
-						<xs:element ref="obverse"/>
-						<xs:element ref="reverse"/>
+						<xs:element ref="obverseState"/>
+						<xs:element ref="reverseState"/>
 					</xs:sequence>
 				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="obverseState">
+		<xs:annotation>
+			<xs:documentation>The &lt;obverseState&gt; is used to describe physical conservation characteristics of the obverse of an object within &lt;physDesc&gt;.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="m.conservationStates"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="reverseState">
+		<xs:annotation>
+			<xs:documentation>The &lt;reverseState&gt; is used to describe physical conservation characteristics of the reverse of an object within &lt;physDesc&gt;.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="m.conservationStates"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -1345,6 +1367,28 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element maxOccurs="unbounded" ref="geogname"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="obverse">
+		<xs:annotation>
+			<xs:documentation>The &lt;obverse&gt; is for for encoding typological attributes about the obverse of a coin within &lt;typeDesc&gt;.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="m.sideCharacteristics"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="reverse">
+		<xs:annotation>
+			<xs:documentation>The &lt;reverse&gt; is for for encoding typological attributes about the reverse of a coin within &lt;typeDesc&gt;.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="m.sideCharacteristics"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -2159,50 +2203,6 @@
 					<xs:attributeGroup ref="m.default"/>
 				</xs:extension>
 			</xs:complexContent>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="obverse">
-		<xs:annotation>
-			<xs:documentation>The &lt;obverse&gt; appears primarily in &lt;typeDesc&gt; for encoding
-				typological attributes about the obverse of a coin, but it can also be used to
-				describe physical conservation characteristics of an object within
-				&lt;physDesc&gt;.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<!-- obverse/reverse can contain metadata about conservationState or characteristics under typeDesc/undertypeDesc -->
-				<xs:choice>
-					<xs:choice>
-						<xs:group ref="m.conservationStates"/>
-					</xs:choice>
-					<xs:choice>
-						<xs:group ref="m.sideCharacteristics"/>
-					</xs:choice>
-				</xs:choice>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="reverse">
-		<xs:annotation>
-			<xs:documentation>The &lt;reverse&gt; appears primarily in &lt;typeDesc&gt; for encoding
-				typological attributes about the reverse of a coin, but it can also be used to
-				describe physical conservation characteristics of an object within
-				&lt;physDesc&gt;.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<!-- obverse/reverse can contain metadata about conservationState or characteristics under typeDesc/undertypeDesc -->
-				<xs:choice>
-					<xs:choice>
-						<xs:group ref="m.conservationStates"/>
-					</xs:choice>
-					<xs:choice>
-						<xs:group ref="m.sideCharacteristics"/>
-					</xs:choice>
-				</xs:choice>
-			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
