@@ -1575,6 +1575,7 @@
 						not be used in conceptual records.</xs:documentation>
 				</xs:annotation>
 				<xs:element minOccurs="0" ref="findspot"/>
+				<xs:element minOccurs="0" ref="hoard"/>
 				<xs:element minOccurs="0" ref="deposit"/>
 				<xs:element minOccurs="0" ref="discovery"/>
 				<xs:element minOccurs="0" ref="disposition"/>
@@ -1627,6 +1628,19 @@
 	<xs:element name="spatialContext">
 		<xs:annotation>
 			<xs:documentation>Defines the geographic feature type or usage.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- hoard element links to URI if other metadata for findspotDesc are required. Otherwise, the hoard can be linked via
+		@xlink:href directly in the findspotDesc -->
+	<xs:element name="hoard">
+		<xs:annotation>
+			<xs:documentation>Names and preferably links to a hoard from which a coin has been found.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType mixed="true">
 			<xs:attribute ref="xml:id"/>
