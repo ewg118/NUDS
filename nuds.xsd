@@ -28,6 +28,7 @@
 	20220224: Added specific gravity into measurementsSet, enabling xlink attributes for chemicalAnalysis components
 	20220525: Added authenticity into authority for coin types
 	20230516: Added archaeological context fields in findspotDesc
+	20230829: Added administrative archaeological fields for Italian excavations
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
@@ -1786,16 +1787,18 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:choice minOccurs="1" maxOccurs="unbounded">
-					<xs:element ref="identifier"/>
+					<xs:element minOccurs="0" maxOccurs="unbounded" ref="identifier"/>
 					<xs:element minOccurs="0" maxOccurs="unbounded" ref="department"/>
 					<xs:element ref="collection"/>
 					<xs:element ref="repository"/>
+					<xs:element ref="physloc"/>
 					<xs:element ref="physloc"/>
 					<xs:element ref="owner"/>
 					<xs:element ref="acknowledgment"/>
 					<xs:element ref="display"/>
 					<xs:element ref="appraisal"/>
 					<xs:element ref="provenance"/>
+					<xs:element ref="editors"/>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
@@ -2183,6 +2186,33 @@
 			<xs:attributeGroup ref="m.default"/>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:element name="editors">
+		<xs:annotation>
+			<xs:documentation>A list of editors that bear some responsibility in the cataloging or editorial process of an object record.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="editor"/>
+			</xs:sequence>
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="editor">
+		<xs:annotation>
+			<xs:documentation>An editor that is responsible for some facet of the cataloging or editorial process of an object record. It is recommended to differentiate roles by XLink attributes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:attribute ref="xml:id"/>
+			<xs:attribute ref="xml:lang"/>
+			<xs:attributeGroup ref="m.default"/>
+			<xs:attributeGroup ref="xlink:simpleLink"/>
+		</xs:complexType>
+	</xs:element>
+	
 	<!-- ********** END ADMINDESC ********** -->
 
 	<!-- ********** COMMONLY REPEATED ELEMENTS ********** -->
